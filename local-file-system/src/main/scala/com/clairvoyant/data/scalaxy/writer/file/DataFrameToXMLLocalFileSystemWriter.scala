@@ -10,11 +10,9 @@ class DataFrameToXMLLocalFileSystemWriter(
     compression: String = "none",
     dateFormat: String = "yyyy-MM-dd",
     declaration: String = """version="1.0" encoding="UTF-8" standalone="yes"""",
-    filePath: String,
     nullValue: String = "null",
     rootTag: String = "rows",
     rowTag: String = "row",
-    saveMode: SaveMode = SaveMode.Overwrite,
     timestampFormat: String = "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
     valueTag: String = "_VALUE"
 ) extends XMLDataFrameWriter(
@@ -30,8 +28,8 @@ class DataFrameToXMLLocalFileSystemWriter(
       valueTag
     ):
 
-  override def write(df: DataFrame): Unit =
+  override def write(df: DataFrame, path: String, saveMode: SaveMode): Unit =
     df.write
       .options(dataFrameToXMLWriterOptions)
       .mode(saveMode)
-      .xml(filePath)
+      .xml(path)

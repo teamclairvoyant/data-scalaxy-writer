@@ -11,7 +11,6 @@ class DataFrameToCSVLocalFileSystemWriter(
     emptyValue: String = "",
     escape: String = "\\",
     escapeQuotes: Boolean = true,
-    filePath: String,
     header: Boolean = true,
     ignoreLeadingWhiteSpace: Boolean = true,
     ignoreTrailingWhiteSpace: Boolean = true,
@@ -19,7 +18,6 @@ class DataFrameToCSVLocalFileSystemWriter(
     nullValue: String = "null",
     quote: String = "\"",
     quoteAll: Boolean = false,
-    saveMode: SaveMode = SaveMode.Overwrite,
     sep: String = ",",
     timestampFormat: String = "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
     timestampNTZFormat: String = "yyyy-MM-dd'T'HH:mm:ss[.SSS]"
@@ -43,8 +41,8 @@ class DataFrameToCSVLocalFileSystemWriter(
       timestampNTZFormat
     ):
 
-  override def write(df: DataFrame): Unit =
+  override def write(df: DataFrame, path: String, saveMode: SaveMode): Unit =
     df.write
       .options(dataFrameToCSVWriterOptions)
       .mode(saveMode)
-      .csv(filePath)
+      .csv(path)

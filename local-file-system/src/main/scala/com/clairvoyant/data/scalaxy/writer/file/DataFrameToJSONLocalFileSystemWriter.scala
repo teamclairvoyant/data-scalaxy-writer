@@ -7,10 +7,8 @@ class DataFrameToJSONLocalFileSystemWriter(
     compression: String = "none",
     dateFormat: String = "yyyy-MM-dd",
     encoding: String = "UTF-8",
-    filePath: String,
     ignoreNullFields: Boolean = false,
     lineSep: String = "\n",
-    saveMode: SaveMode = SaveMode.Overwrite,
     timestampFormat: String = "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
     timestampNTZFormat: String = "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
     timeZone: String = "UTC"
@@ -25,8 +23,8 @@ class DataFrameToJSONLocalFileSystemWriter(
       timeZone
     ):
 
-  override def write(df: DataFrame): Unit =
+  override def write(df: DataFrame, path: String, saveMode: SaveMode): Unit =
     df.write
       .options(dataFrameToJSONWriterOptions)
       .mode(saveMode)
-      .json(filePath)
+      .json(path)

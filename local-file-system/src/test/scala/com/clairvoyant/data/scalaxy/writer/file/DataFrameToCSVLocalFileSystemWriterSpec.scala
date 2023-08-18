@@ -8,10 +8,10 @@ import java.io.File
 
 class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with BeforeAndAfterEach {
 
-  lazy val dataFrameToFileSystemWriterOutputDirPath = s"out_${System.currentTimeMillis()}"
+  val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
   "write()" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1",
@@ -20,25 +20,20 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
     )
 
     DataFrameToCSVLocalFileSystemWriter()
-      .write(df, dataFrameToFileSystemWriterOutputDirPath)
+      .write(df, outputDirPath)
 
-    val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true")
-    )
+    val actualDF = readCSVFromFile(outputDirPath)
 
     val expectedDF = readCSVFromText(
-      text =
-        """|col_A,col_B,col_C
-           |val_A1,val_B1,val_C1""".stripMargin,
-      csvOptions = Map("header" -> "true")
+      """|col_A,col_B,col_C
+         |val_A1,val_B1,val_C1""".stripMargin
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with emptyValue" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1",
@@ -48,25 +43,20 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       emptyValue = "NA"
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
-    val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true")
-    )
+    val actualDF = readCSVFromFile(outputDirPath)
 
     val expectedDF = readCSVFromText(
-      text =
-        """|col_A,col_B,col_C
-           |val_A1,val_B1,NA""".stripMargin,
-      csvOptions = Map("header" -> "true")
+      """|col_A,col_B,col_C
+         |val_A1,val_B1,NA""".stripMargin
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with header as false" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1",
@@ -76,10 +66,10 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       header = false
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
     val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
+      path = outputDirPath,
       csvOptions = Map("header" -> "false")
     )
 
@@ -92,7 +82,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
   }
 
   "write() - with ignoreLeadingWhiteSpace as false" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "    val_B1",
@@ -102,25 +92,20 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       ignoreLeadingWhiteSpace = false
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
-    val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true")
-    )
+    val actualDF = readCSVFromFile(outputDirPath)
 
     val expectedDF = readCSVFromText(
-      text =
-        """|col_A,col_B,col_C
-           |val_A1,    val_B1,val_C1""".stripMargin,
-      csvOptions = Map("header" -> "true")
+      """|col_A,col_B,col_C
+         |val_A1,    val_B1,val_C1""".stripMargin
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with ignoreLeadingWhiteSpace as true" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "    val_B1",
@@ -130,25 +115,20 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       ignoreLeadingWhiteSpace = true
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
-    val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true")
-    )
+    val actualDF = readCSVFromFile(outputDirPath)
 
     val expectedDF = readCSVFromText(
-      text =
-        """|col_A,col_B,col_C
-           |val_A1,val_B1,val_C1""".stripMargin,
-      csvOptions = Map("header" -> "true")
+      """|col_A,col_B,col_C
+         |val_A1,val_B1,val_C1""".stripMargin
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with ignoreTrailingWhiteSpace as false" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1    ",
@@ -158,25 +138,20 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       ignoreTrailingWhiteSpace = false
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
-    val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true")
-    )
+    val actualDF = readCSVFromFile(outputDirPath)
 
     val expectedDF = readCSVFromText(
-      text =
-        """|col_A,col_B,col_C
-           |val_A1,val_B1    ,val_C1""".stripMargin,
-      csvOptions = Map("header" -> "true")
+      """|col_A,col_B,col_C
+         |val_A1,val_B1    ,val_C1""".stripMargin
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with ignoreTrailingWhiteSpace as true" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1    ",
@@ -186,25 +161,20 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       ignoreTrailingWhiteSpace = true
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
-    val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true")
-    )
+    val actualDF = readCSVFromFile(outputDirPath)
 
     val expectedDF = readCSVFromText(
-      text =
-        """|col_A,col_B,col_C
-           |val_A1,val_B1,val_C1""".stripMargin,
-      csvOptions = Map("header" -> "true")
+      """|col_A,col_B,col_C
+         |val_A1,val_B1,val_C1""".stripMargin
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with lineSep" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1",
@@ -214,23 +184,23 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       lineSep = "#"
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
     val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true", "lineSep" -> "#")
+      path = outputDirPath,
+      csvOptions = Map("lineSep" -> "#")
     )
 
     val expectedDF = readCSVFromText(
       text = "col_A,col_B,col_C#val_A1,val_B1,val_C1",
-      csvOptions = Map("header" -> "true", "lineSep" -> "#")
+      csvOptions = Map("lineSep" -> "#")
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with nullValue" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1",
@@ -240,25 +210,20 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       nullValue = "Invalid"
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
-    val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true")
-    )
+    val actualDF = readCSVFromFile(outputDirPath)
 
     val expectedDF = readCSVFromText(
-      text =
-        """|col_A,col_B,col_C
-           |val_A1,val_B1,Invalid""".stripMargin,
-      csvOptions = Map("header" -> "true")
+      """|col_A,col_B,col_C
+         |val_A1,val_B1,Invalid""".stripMargin
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
   "write() - with sep" should "write a dataframe to the provided path" in {
-    val df = readJSON(
+    val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
          |  "col_B": "val_B1",
@@ -268,23 +233,23 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
 
     DataFrameToCSVLocalFileSystemWriter(
       sep = ";"
-    ).write(df, dataFrameToFileSystemWriterOutputDirPath)
+    ).write(df, outputDirPath)
 
     val actualDF = readCSVFromFile(
-      path = dataFrameToFileSystemWriterOutputDirPath,
-      csvOptions = Map("header" -> "true", "sep" -> ";")
+      path = outputDirPath,
+      csvOptions = Map("sep" -> ";")
     )
 
     val expectedDF = readCSVFromText(
       text =
         """|col_A;col_B;col_C
            |val_A1;val_B1;val_C1""".stripMargin,
-      csvOptions = Map("header" -> "true", "sep" -> ";")
+      csvOptions = Map("sep" -> ";")
     )
 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
-  override def afterEach(): Unit = FileUtils.deleteDirectory(new File(dataFrameToFileSystemWriterOutputDirPath))
+  override def afterEach(): Unit = FileUtils.deleteDirectory(new File(outputDirPath))
 
 }

@@ -41,7 +41,7 @@ class DataFrameToCSVLocalFileSystemWriter(
       timestampNTZFormat
     ):
 
-  override def write(df: DataFrame, path: String, saveMode: SaveMode): Unit =
+  override def write(df: DataFrame, path: String, saveMode: SaveMode = SaveMode.Overwrite): Unit =
     df.write
       .options(dataFrameToCSVWriterOptions)
       .mode(saveMode)

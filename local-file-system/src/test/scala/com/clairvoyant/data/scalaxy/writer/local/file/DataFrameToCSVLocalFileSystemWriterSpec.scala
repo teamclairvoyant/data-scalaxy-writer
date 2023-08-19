@@ -1,6 +1,8 @@
-package com.clairvoyant.data.scalaxy.writer.file
+package com.clairvoyant.data.scalaxy.writer.local.file
 
 import com.clairvoyant.data.scalaxy.test.util.DataScalaxyTestUtil
+import com.clairvoyant.data.scalaxy.writer.local.file.formats.CSVFileFormat
+import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToCSVFileWriter
 import org.apache.commons.io.FileUtils
 import org.scalatest.BeforeAndAfterEach
 
@@ -19,8 +21,14 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter()
-      .write(df, outputDirPath)
+    val csvFileFormat = CSVFileFormat()
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(outputDirPath)
 
@@ -41,9 +49,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       emptyValue = "NA"
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(outputDirPath)
 
@@ -64,9 +79,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       header = false
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(
       path = outputDirPath,
@@ -90,9 +112,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       ignoreLeadingWhiteSpace = false
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(outputDirPath)
 
@@ -113,9 +142,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       ignoreLeadingWhiteSpace = true
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(outputDirPath)
 
@@ -136,9 +172,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       ignoreTrailingWhiteSpace = false
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(outputDirPath)
 
@@ -159,9 +202,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       ignoreTrailingWhiteSpace = true
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(outputDirPath)
 
@@ -182,9 +232,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       lineSep = "#"
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(
       path = outputDirPath,
@@ -208,9 +265,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       nullValue = "Invalid"
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(outputDirPath)
 
@@ -231,9 +295,16 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataScalaxyTestUtil with B
          |}""".stripMargin
     )
 
-    DataFrameToCSVLocalFileSystemWriter(
+    val csvFileFormat = CSVFileFormat(
       sep = ";"
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = csvFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readCSVFromFile(
       path = outputDirPath,

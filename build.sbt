@@ -12,7 +12,6 @@ ThisBuild / credentials += Credentials(
 // ----- RESOLVERS ----- //
 
 ThisBuild / resolvers ++= Seq(
-  "DataScalaxyCommon Repo" at "https://maven.pkg.github.com/teamclairvoyant/data-scalaxy-common/",
   "DataScalaxyTestUtil Repo" at "https://maven.pkg.github.com/teamclairvoyant/data-scalaxy-test-util/"
 )
 
@@ -32,27 +31,40 @@ ThisBuild / scalafixOnCompile := true
 ThisBuild / wartremoverErrors ++= Warts.allBut(
   Wart.Any,
   Wart.DefaultArguments,
+  Wart.FinalCaseClass,
+  Wart.LeakingSealed,
   Wart.ToString
 )
 
 // ----- TOOL VERSIONS ----- //
 
-val dataScalaxyCommonVersion = "1.0.0"
 val dataScalaxyTestUtilVersion = "1.0.0"
+val sparkVersion = "3.4.1"
+val sparkXMLVersion = "0.16.0"
 
 // ----- TOOL DEPENDENCIES ----- //
 
-val dataScalaxyCommonDependencies = Seq(
-  "com.clairvoyant.data.scalaxy" %% "common" % dataScalaxyCommonVersion
+val dataScalaxyTestUtilDependencies = Seq(
+  "com.clairvoyant.data.scalaxy" %% "test-util" % dataScalaxyTestUtilVersion % Test
 )
 
-val dataScalaxyTestUtilDependencies = Seq(
-  "com.clairvoyant.data.scalaxy" %% "test-util" % dataScalaxyTestUtilVersion
+val sparkDependencies = Seq(
+  "org.apache.spark" %% "spark-core" % sparkVersion,
+  "org.apache.spark" %% "spark-sql" % sparkVersion
 )
+  .map(_ excludeAll ("org.scala-lang.modules", "scala-xml"))
+  .map(_.cross(CrossVersion.for3Use2_13))
+
+val sparkXMLDependencies = Seq(
+  "com.databricks" %% "spark-xml" % sparkXMLVersion
+).map(_.cross(CrossVersion.for3Use2_13))
 
 // ----- MODULE DEPENDENCIES ----- //
 
-val localFileSystemDependencies = dataScalaxyCommonDependencies ++ dataScalaxyTestUtilDependencies
+val localFileSystemDependencies =
+  dataScalaxyTestUtilDependencies ++
+    sparkDependencies ++
+    sparkXMLDependencies
 
 // ----- PROJECTS ----- //
 

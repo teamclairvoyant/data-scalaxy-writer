@@ -1,6 +1,8 @@
-package com.clairvoyant.data.scalaxy.writer.file
+package com.clairvoyant.data.scalaxy.writer.local.file
 
 import com.clairvoyant.data.scalaxy.test.util.DataScalaxyTestUtil
+import com.clairvoyant.data.scalaxy.writer.local.file.formats.JSONFileFormat
+import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToJSONFileWriter
 import org.apache.commons.io.FileUtils
 import org.scalatest.BeforeAndAfterEach
 
@@ -19,9 +21,14 @@ class DataFrameToJSONLocalFileSystemWriterSpec extends DataScalaxyTestUtil with 
          |}""".stripMargin
     )
 
-    DataFrameToJSONLocalFileSystemWriter()
-      .write(df, outputDirPath)
+    val jsonFileFormat = JSONFileFormat()
 
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = jsonFileFormat,
+        path = outputDirPath
+      )
     val actualDF = readJSONFromFile(outputDirPath)
 
     val expectedDF = df
@@ -29,7 +36,7 @@ class DataFrameToJSONLocalFileSystemWriterSpec extends DataScalaxyTestUtil with 
     actualDF should matchExpectedDataFrame(expectedDF)
   }
 
-  "write() - ignoreNullFields" should "write a dataframe to the provided path" in {
+  "write() - with ignoreNullFields" should "write a dataframe to the provided path" in {
     val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",
@@ -38,9 +45,16 @@ class DataFrameToJSONLocalFileSystemWriterSpec extends DataScalaxyTestUtil with 
          |}""".stripMargin
     )
 
-    DataFrameToJSONLocalFileSystemWriter(
+    val jsonFileFormat = JSONFileFormat(
       ignoreNullFields = true
-    ).write(df, outputDirPath)
+    )
+
+    DataFrameToLocalFileSystemWriter
+      .write(
+        dataFrame = df,
+        fileFormat = jsonFileFormat,
+        path = outputDirPath
+      )
 
     val actualDF = readJSONFromFile(outputDirPath)
 

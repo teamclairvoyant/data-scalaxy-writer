@@ -7,7 +7,6 @@ This library supports below target systems:
 * Local File System
 
 
-
 ## Local File System
 
 User can use this library to write/persist spark dataframe to the local file system in various file formats.

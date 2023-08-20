@@ -68,7 +68,14 @@ val localFileSystemDependencies =
 
 // ----- PROJECTS ----- //
 
-lazy val `writer-local-file-system` = project
+lazy val `data-scalaxy-writer` = (project in file("."))
+  .settings(
+    publish / skip := true,
+    publishLocal / skip := true
+  )
+  .aggregate(`writer-local-file-system`)
+
+lazy val `writer-local-file-system` = (project in file("local-file-system"))
   .settings(
     version := "1.0.0",
     libraryDependencies ++= localFileSystemDependencies

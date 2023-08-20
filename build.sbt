@@ -70,5 +70,6 @@ val localFileSystemDependencies =
 
 lazy val `writer-local-file-system` = project
   .settings(
+    version := "1.0.0",
     libraryDependencies ++= localFileSystemDependencies
   )

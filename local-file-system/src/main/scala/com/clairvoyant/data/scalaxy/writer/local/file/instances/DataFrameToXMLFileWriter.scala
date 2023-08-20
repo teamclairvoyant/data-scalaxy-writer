@@ -8,20 +8,23 @@ implicit object DataFrameToXMLFileWriter extends DataFrameToFileWriter[XMLFileFo
   import com.databricks.spark.xml.*
 
   override def write(dataFrame: DataFrame, fileFormat: XMLFileFormat, path: String, saveMode: SaveMode): Unit =
+    val xmlOptions = Map(
+      "arrayElementName" -> fileFormat.arrayElementName,
+      "attributePrefix" -> fileFormat.attributePrefix,
+      "dateFormat" -> fileFormat.dateFormat,
+      "declaration" -> fileFormat.declaration,
+      "nullValue" -> fileFormat.nullValue,
+      "rootTag" -> fileFormat.rootTag,
+      "rowTag" -> fileFormat.rowTag,
+      "timestampFormat" -> fileFormat.timestampFormat,
+      "valueTag" -> fileFormat.valueTag
+    )
+
     dataFrame.write
       .options(
-        Map(
-          "arrayElementName" -> fileFormat.arrayElementName,
-          "attributePrefix" -> fileFormat.attributePrefix,
-          "compression" -> fileFormat.compression,
-          "dateFormat" -> fileFormat.dateFormat,
-          "declaration" -> fileFormat.declaration,
-          "nullValue" -> fileFormat.nullValue,
-          "rootTag" -> fileFormat.rootTag,
-          "rowTag" -> fileFormat.rowTag,
-          "timestampFormat" -> fileFormat.timestampFormat,
-          "valueTag" -> fileFormat.valueTag
-        )
+        fileFormat.compression
+          .map(compressionCodec => xmlOptions + ("compression" -> compressionCodec))
+          .getOrElse(xmlOptions)
       )
       .mode(saveMode)
       .xml(path)

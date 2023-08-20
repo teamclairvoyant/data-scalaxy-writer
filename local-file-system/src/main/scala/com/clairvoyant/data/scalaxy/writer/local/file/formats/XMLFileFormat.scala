@@ -3,7 +3,7 @@ package com.clairvoyant.data.scalaxy.writer.local.file.formats
 case class XMLFileFormat(
     arrayElementName: String = "item",
     attributePrefix: String = "_",
-    compression: String = "none",
+    compression: Option[String] = None,
     dateFormat: String = "yyyy-MM-dd",
     declaration: String = """version="1.0" encoding="UTF-8" standalone="yes"""",
     nullValue: String = "null",

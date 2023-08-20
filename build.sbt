@@ -68,7 +68,7 @@ val localFileSystemDependencies =
 
 // ----- PROJECTS ----- //
 
-lazy val `local-file-system` = project
+lazy val `writer-local-file-system` = project
   .settings(
     libraryDependencies ++= localFileSystemDependencies
   )

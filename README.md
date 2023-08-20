@@ -7,7 +7,6 @@ This library supports below target systems:
 * Local File System
 
 
-
 ## Local File System
 
 User can use this library to write/persist spark dataframe to the local file system in various file formats.
@@ -30,7 +29,7 @@ ThisBuild / credentials += Credentials(
   System.getenv("GITHUB_TOKEN")
 )
 
-ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-local-file-system" % "1.0.0" % Test
+ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-local-file-system" % "1.0.0"
 ```
 
 Make sure you add `GITHUB_USERNAME` and `GITHUB_TOKEN` to the environment variables.

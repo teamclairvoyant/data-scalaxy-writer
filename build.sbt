@@ -115,5 +115,6 @@ lazy val `writer-local-file-system` = (project in file("local-file-system"))
 lazy val `writer-aws` = (project in file("aws"))
   .settings(
     version := "1.0.0",
-    libraryDependencies ++= awsDependencies
+    libraryDependencies ++= awsDependencies,
+    Test / parallelExecution := false,
   )

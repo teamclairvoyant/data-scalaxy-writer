@@ -1,6 +1,7 @@
 package com.clairvoyant.data.scalaxy.writer.local.file
 
-import com.clairvoyant.data.scalaxy.test.util.DataScalaxyTestUtil
+import com.clairvoyant.data.scalaxy.test.util.matchers.DataFrameMatcher
+import com.clairvoyant.data.scalaxy.test.util.readers.DataFrameReader
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.JSONFileFormat
 import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToJSONFileWriter
 import org.apache.commons.io.FileUtils
@@ -8,7 +9,7 @@ import org.scalatest.BeforeAndAfterEach
 
 import java.io.File
 
-class DataFrameToJSONLocalFileSystemWriterSpec extends DataScalaxyTestUtil with BeforeAndAfterEach {
+class DataFrameToJSONLocalFileSystemWriterSpec extends DataFrameReader with DataFrameMatcher with BeforeAndAfterEach {
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 

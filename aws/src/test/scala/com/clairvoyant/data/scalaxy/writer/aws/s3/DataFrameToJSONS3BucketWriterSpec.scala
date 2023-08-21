@@ -10,7 +10,7 @@ class DataFrameToJSONS3BucketWriterSpec extends DataFrameReader with DataFrameMa
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
-  "write()" should "write a dataframe to the provided path" in {
+  "write()" should "write a dataframe to the provided s3 path" in {
     val df = readJSONFromText(
       """|{
          |  "col_A": "val_A1",

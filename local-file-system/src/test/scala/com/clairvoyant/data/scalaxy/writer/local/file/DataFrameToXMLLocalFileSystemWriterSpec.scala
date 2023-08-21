@@ -1,11 +1,12 @@
 package com.clairvoyant.data.scalaxy.writer.local.file
 
-import com.clairvoyant.data.scalaxy.test.util.DataScalaxyTestUtil
+import com.clairvoyant.data.scalaxy.test.util.matchers.DataFrameMatcher
+import com.clairvoyant.data.scalaxy.test.util.readers.DataFrameReader
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.XMLFileFormat
 import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToXMLFileWriter
 import org.scalatest.BeforeAndAfterEach
 
-class DataFrameToXMLLocalFileSystemWriterSpec extends DataScalaxyTestUtil with BeforeAndAfterEach {
+class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataFrameMatcher with BeforeAndAfterEach {
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 

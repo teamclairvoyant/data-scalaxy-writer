@@ -1,15 +1,12 @@
-package com.clairvoyant.data.scalaxy.writer.local.file
+package com.clairvoyant.data.scalaxy.writer.aws.s3
 
 import com.clairvoyant.data.scalaxy.test.util.matchers.DataFrameMatcher
+import com.clairvoyant.data.scalaxy.test.util.mock.S3BucketMock
 import com.clairvoyant.data.scalaxy.test.util.readers.DataFrameReader
-import com.clairvoyant.data.scalaxy.writer.local.file.formats.ParquetFileFormat
-import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToParquetFileWriter
-import org.scalatest.BeforeAndAfterEach
+import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.ParquetFileFormat
+import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToParquetFileWriter
 
-class DataFrameToParquetLocalFileSystemWriterSpec
-    extends DataFrameReader
-    with DataFrameMatcher
-    with BeforeAndAfterEach {
+class DataFrameToParquetS3BucketWriterSpec extends DataFrameReader with DataFrameMatcher with S3BucketMock {
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
@@ -24,14 +21,19 @@ class DataFrameToParquetLocalFileSystemWriterSpec
 
     val parquetFileFormat = ParquetFileFormat()
 
-    DataFrameToLocalFileSystemWriter
-      .write(
+    val bucketName = "test-bucket"
+
+    s3Client.createBucket(bucketName)
+
+    DataFrameToS3BucketWriter
+      .write[ParquetFileFormat](
         dataFrame = df,
         fileFormat = parquetFileFormat,
+        bucketName = bucketName,
         path = outputDirPath
       )
 
-    val actualDF = readParquet(outputDirPath)
+    val actualDF = readParquet(s"s3a://$bucketName/$outputDirPath")
 
     val expectedDF = df
 

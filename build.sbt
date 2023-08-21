@@ -41,6 +41,7 @@ ThisBuild / wartremoverErrors ++= Warts.allBut(
 val dataScalaxyTestUtilVersion = "1.0.0"
 val sparkVersion = "3.4.1"
 val sparkXMLVersion = "0.16.0"
+val zioConfigVersion = "4.0.0-RC16"
 
 // ----- TOOL DEPENDENCIES ----- //
 
@@ -59,12 +60,17 @@ val sparkXMLDependencies = Seq(
   "com.databricks" %% "spark-xml" % sparkXMLVersion
 ).map(_.cross(CrossVersion.for3Use2_13))
 
+val zioConfigDependencies = Seq(
+  "dev.zio" %% "zio-config-magnolia" % zioConfigVersion
+).map(_ excludeAll ("org.scala-lang.modules", "scala-collection-compat"))
+
 // ----- MODULE DEPENDENCIES ----- //
 
 val localFileSystemDependencies =
   dataScalaxyTestUtilDependencies ++
     sparkDependencies ++
-    sparkXMLDependencies
+    sparkXMLDependencies ++ 
+    zioConfigDependencies
 
 // ----- PROJECTS ----- //
 

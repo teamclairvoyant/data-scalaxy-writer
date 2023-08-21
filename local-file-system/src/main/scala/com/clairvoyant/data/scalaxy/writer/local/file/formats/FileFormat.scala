@@ -1,5 +1,8 @@
 package com.clairvoyant.data.scalaxy.writer.local.file.formats
 
+import zio.config.derivation.*
+
+@nameWithLabel
 sealed trait FileFormat
 
 case class CSVFileFormat(

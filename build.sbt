@@ -39,6 +39,7 @@ ThisBuild / wartremoverErrors ++= Warts.allBut(
 // ----- TOOL VERSIONS ----- //
 
 val dataScalaxyTestUtilVersion = "1.0.0"
+val gcsConnectorVersion = "hadoop3-2.2.17"
 val s3MockVersion = "0.2.6"
 val scalaParserCombinatorsVersion = "2.3.0"
 val sparkVersion = "3.4.1"
@@ -50,6 +51,8 @@ val zioConfigVersion = "4.0.0-RC16"
 val dataScalaxyTestUtilDependencies = Seq(
   "com.clairvoyant.data.scalaxy" %% "test-util" % dataScalaxyTestUtilVersion % Test
 )
+
+val gcsConnectorDependencies = Seq("com.google.cloud.bigdataoss" % "gcs-connector" % gcsConnectorVersion)
 
 val s3MockDependencies = Seq(
   "io.findify" %% "s3mock" % s3MockVersion % Test
@@ -97,6 +100,13 @@ val awsDependencies =
     sparkXMLDependencies ++
     zioConfigDependencies
 
+val gcpDependencies =
+  dataScalaxyTestUtilDependencies ++
+    gcsConnectorDependencies ++
+    sparkDependencies ++
+    sparkXMLDependencies ++
+    zioConfigDependencies
+
 // ----- PROJECTS ----- //
 
 lazy val `data-scalaxy-writer` = (project in file("."))
@@ -104,7 +114,7 @@ lazy val `data-scalaxy-writer` = (project in file("."))
     publish / skip := true,
     publishLocal / skip := true
   )
-  .aggregate(`writer-local-file-system`, `writer-aws`)
+  .aggregate(`writer-local-file-system`, `writer-aws`, `writer-gcp`)
 
 lazy val `writer-local-file-system` = (project in file("local-file-system"))
   .settings(
@@ -116,5 +126,11 @@ lazy val `writer-aws` = (project in file("aws"))
   .settings(
     version := "1.0.0",
     libraryDependencies ++= awsDependencies,
-    Test / parallelExecution := false,
+    Test / parallelExecution := false
+  )
+
+lazy val `writer-gcp` = (project in file("gcp"))
+  .settings(
+    version := "1.0.0",
+    libraryDependencies ++= gcpDependencies
   )

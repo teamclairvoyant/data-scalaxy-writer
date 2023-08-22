@@ -114,7 +114,7 @@ lazy val `data-scalaxy-writer` = (project in file("."))
     publish / skip := true,
     publishLocal / skip := true
   )
-  .aggregate(`writer-local-file-system`, `writer-aws`)
+  .aggregate(`writer-local-file-system`, `writer-aws`, `writer-gcp`)
 
 lazy val `writer-local-file-system` = (project in file("local-file-system"))
   .settings(
@@ -132,6 +132,5 @@ lazy val `writer-aws` = (project in file("aws"))
 lazy val `writer-gcp` = (project in file("gcp"))
   .settings(
     version := "1.0.0",
-    libraryDependencies ++= gcpDependencies,
-    Test / parallelExecution := false
+    libraryDependencies ++= gcpDependencies
   )

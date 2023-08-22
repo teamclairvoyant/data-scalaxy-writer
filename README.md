@@ -6,6 +6,7 @@ This library supports below target systems:
 
 * Local File System
 * AWS
+* GCP
 
 
 ## local-file-system

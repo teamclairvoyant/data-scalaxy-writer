@@ -14,7 +14,6 @@ object DataFrameToBigQueryWriter {
       clusteredFields: Option[String],
       saveMode: SaveMode = SaveMode.Overwrite
   ): Unit =
-
     dataFrame.write
       .mode(saveMode)
       .format("bigquery")
@@ -27,6 +26,7 @@ object DataFrameToBigQueryWriter {
           "partitionField" -> partitionField,
           "clusteredFields" -> clusteredFields
         ).map((optionName, optionValue) => (optionName, optionValue.toString))
-      ).save()
+      )
+      .save()
 
 }

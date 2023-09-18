@@ -34,8 +34,10 @@ object DataFrameToBigQueryWriter {
       "createDisposition" -> createDisposition,
       "writeDisposition" -> writeDisposition,
       "partitionField" -> partitionField,
-      "clusteredFields" -> clusteredFields,
-    ).collect { case (key, Some(value)) => key -> value }
+      "clusteredFields" -> clusteredFields
+    ).collect { case (key, Some(value)) =>
+      key -> value
+    }
 
     val optionsMap = fixedOptions ++ optionalOptions
 
@@ -45,4 +47,5 @@ object DataFrameToBigQueryWriter {
       .options(optionsMap)
       .save()
   }
+
 }

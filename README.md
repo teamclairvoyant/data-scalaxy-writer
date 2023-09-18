@@ -35,12 +35,19 @@ Please see the detailed documentation [here](aws/README.md).
 
 ## gcp
 
-User can use this library to write/persist spark dataframe to gcs buckets in various file formats.
-Supported file formats are:
+User can use this library to write/persist spark dataframe to the various storage options provided by google cloud system.
+Currently, we are supporting below options:
+* GCS
+* BigQuery
 
+### gcs
+User can write to the cloud storage layer provided by google called `GCS`. Below are the supported file formats:
 * CSV
 * JSON
 * XML
 * Parquet
+
+### bigQuery
+BigQuery is Hive like tabular storage abstraction provided by GCP. User can write Spark df straightaway to these tables.
 
 Please see the detailed documentation [here](gcp/README.md).

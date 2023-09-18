@@ -40,6 +40,7 @@ ThisBuild / wartremoverErrors ++= Warts.allBut(
 
 val dataScalaxyTestUtilVersion = "1.0.0"
 val gcsConnectorVersion = "hadoop3-2.2.17"
+val gbqConnectorVersion = "0.32.2"
 val s3MockVersion = "0.2.6"
 val scalaParserCombinatorsVersion = "2.3.0"
 val sparkVersion = "3.4.1"
@@ -53,6 +54,9 @@ val dataScalaxyTestUtilDependencies = Seq(
 )
 
 val gcsConnectorDependencies = Seq("com.google.cloud.bigdataoss" % "gcs-connector" % gcsConnectorVersion)
+
+val gbqConnectorDependencies = Seq("com.google.cloud.spark" %% "spark-bigquery" % gbqConnectorVersion)
+  .map(_.cross(CrossVersion.for3Use2_13))
 
 val s3MockDependencies = Seq(
   "io.findify" %% "s3mock" % s3MockVersion % Test
@@ -103,6 +107,7 @@ val awsDependencies =
 val gcpDependencies =
   dataScalaxyTestUtilDependencies ++
     gcsConnectorDependencies ++
+    gbqConnectorDependencies ++
     sparkDependencies ++
     sparkXMLDependencies ++
     zioConfigDependencies

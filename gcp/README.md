@@ -217,3 +217,51 @@ DataFrameToGCSBucketWriter
         path = outputPath
       )
 ``````
+
+## Google BigQuery
+
+User can use this library to write/persist spark dataframe to google BigQuery table.
+
+Suppose user wants to write the dataframe `df` to the bigQuery table named `myBQTable` present under the dataset `myBQDataset`.
+Then user need to perform below steps:
+
+#### 1. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
+``````
+
+#### 2. Call API
+
+```scala
+DataFrameToBigQueryWriter
+      .write(
+        dataFrame = df,
+        table = "myBQTable", // or table = "myBQDataset.myBQTable"
+        dataset = Option("myBQDataset"),
+        temporaryGcsBucket = Option("myTempGcsBucket")
+      )
+``````
+User can provide below parameters to the write method:
+
+| Parameter Name     | Optional/Mandatory | Default Value | Description                                                                                                   |
+|:-------------------|:-------------------|:-------------:|:--------------------------------------------------------------------------------------------------------------|
+| dataFrame          | Mandatory          |     none      | Spark dataframe to be written                                                                                 |
+| table              | Mandatory          |     none      | BigQuery tableName (Also allowed to specify fully qualified name like dataset.tableName)                      |
+| dataset            | Optional           |     none      | BigQuery dataset name                                                                                         |
+| temporaryGcsBucket | Optional           |     none      | Temporary google cloud bucket name used as a staging storage layer (Optional but recommended)                 |
+| createDisposition  | Optional           |     none      | Optional, determines what to do if the table already exists ("CREATE_IF_NEEDED", "CREATE_NEVER")              |
+| writeDisposition   | Optional           |     none      | Optional, specifies the write disposition ("WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY")                   |
+| partitionField     | Optional           |     none      | Optional, specifies the field to partition the BigQuery table by                                              |
+| clusteredFields    | Optional           |     none      | Optional, specifies fields to cluster by in the BigQuery table                                                |
+| saveMode           | Optional           |   Overwrite   | mode of writing; default is overwrite; can be avoided if writeDisposition/ createDisposition has been defined |
+
+Also, note that for writing to the BigQuery it is necessary to have below privileges to the user:
+
+| Role Name                   |             Purpose              |
+|:----------------------------|:--------------------------------:|
+| roles/bigquery.dataEditor   |      Access BigQuery Tables      |
+| roles/bigquery.jobUser      | Create and query BigQuery tables |
+| roles/storage.objectViewer  |  To list and read GCS contents   |
+| roles/storage.objectCreator |     To create folders in GCS     |
+

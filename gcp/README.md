@@ -47,7 +47,7 @@ val csvFileFormat = CSVFileFormat(
 User can provide below options to the `CSVFileFormat` instance:
 
 | Parameter Name            |        Default Value        | Description                                                                                                                                                                        |
-| :------------------------ | :-------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:--------------------------|:---------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | charToEscapeQuoteEscaping |              \              | Sets a single character used for escaping the escape for the quote character.                                                                                                      |
 | compression               |            none             | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, bzip2, gzip, lz4, snappy and deflate).                            |
 | dateFormat                |         yyyy-MM-dd          | Sets the string that indicates a date format.                                                                                                                                      |
@@ -76,17 +76,18 @@ import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToCSVFileW
 
 ```scala
 DataFrameToGCSBucketWriter
-      .write(
-        dataFrame = df,
-        fileFormat = csvFileFormat,
-        bucketName = mybucket,
-        path = outputPath
-      )
+  .write(
+    dataFrame = df,
+    fileFormat = csvFileFormat,
+    bucketName = mybucket,
+    path = outputPath
+  )
 ``````
 
 ### JSON
 
-Suppose user wants to write the dataframe `df` to the gcs bucket `myBucket` under the path `outputPath` in the `json` format.
+Suppose user wants to write the dataframe `df` to the gcs bucket `myBucket` under the path `outputPath` in the `json`
+format.
 Then user need to perform below steps:
 
 #### 1. Define file format
@@ -95,14 +96,14 @@ Then user need to perform below steps:
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.JSONFileFormat
 
 val jsonFileFormat = JSONFileFormat(
-      ignoreNullFields = true
-    )
+  ignoreNullFields = true
+)
 ```
 
 User can provide below options to the `JSONFileFormat` instance:
 
 | Parameter Name     |        Default Value        | Description                                                                                                                                             |
-| :----------------- | :-------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|:-------------------|:---------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | compression        |            none             | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, bzip2, gzip, lz4, snappy and deflate). |
 | dateFormat         |         yyyy-MM-dd          | Sets the string that indicates a date format.                                                                                                           |
 | encoding           |            UTF-8            | Specifies encoding (charset) of saved CSV files.                                                                                                        |
@@ -122,12 +123,12 @@ import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToJSONFile
 
 ```scala
 DataFrameToGCSBucketWriter
-      .write(
-        dataFrame = df,
-        fileFormat = jsonFileFormat,
-        bucketName = myBucket,
-        path = outputPath
-      )
+  .write(
+    dataFrame = df,
+    fileFormat = jsonFileFormat,
+    bucketName = myBucket,
+    path = outputPath
+  )
 ``````
 
 ### XML
@@ -141,14 +142,14 @@ Then user need to perform below steps:
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.XMLFileFormat
 
 val xmlFileFormat = XMLFileFormat(
-      attributePrefix = "attr_"
-    )
+  attributePrefix = "attr_"
+)
 ```
 
 User can provide below options to the `XMLFileFormat` instance:
 
 | Parameter Name   |                  Default Value                  | Description                                                                                                                                                                                                                                                                                          |
-| :--------------- | :---------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:-----------------|:-----------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | arrayElementName |                      item                       | Name of XML element that encloses each element of an array-valued column when writing.                                                                                                                                                                                                               |
 | attributePrefix  |                        _                        | The prefix for attributes so that we can differentiating attributes and elements. This will be the prefix for field names.                                                                                                                                                                           |
 | compression      |                      None                       | Compression codec to use when saving to file. <br/>Should be the fully qualified name of a class implementing org.apache.hadoop.io.compress.CompressionCodec or one of case-insensitive shorten names (bzip2, gzip, lz4, and snappy). <br/>Defaults to no compression when a codec is not specified. |
@@ -170,17 +171,18 @@ import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToXMLFileW
 
 ```scala
 DataFrameToGCSBucketWriter
-      .write(
-        dataFrame = df,
-        fileFormat = xmlFileFormat,
-        bucketName = myBucket,
-        path = outputPath
-      )
+  .write(
+    dataFrame = df,
+    fileFormat = xmlFileFormat,
+    bucketName = myBucket,
+    path = outputPath
+  )
 ``````
 
 ### PARQUET
 
-Suppose user wants to write the dataframe `df` to gcs bucket `myBucket` under the path `outputPath` in the `parquet` format.
+Suppose user wants to write the dataframe `df` to gcs bucket `myBucket` under the path `outputPath` in the `parquet`
+format.
 Then user need to perform below steps:
 
 #### 1. Define file format
@@ -194,7 +196,7 @@ val parquetFileFormat = ParquetFileFormat()
 User can provide below options to the `ParquetFileFormat` instance:
 
 | Parameter Name     | Default Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| :----------------- | :-----------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:-------------------|:-------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | datetimeRebaseMode |   EXCEPTION   | The datetimeRebaseMode option allows to specify the rebasing mode for the values of the DATE, TIMESTAMP_MILLIS, TIMESTAMP_MICROS logical types from the Julian to Proleptic Gregorian calendar. <br/> Currently supported modes are: <br/> EXCEPTION: fails in reads of ancient dates/timestamps that are ambiguous between the two calendars. <br/> CORRECTED: loads dates/timestamps without rebasing. <br/> LEGACY: performs rebasing of ancient dates/timestamps from the Julian to Proleptic Gregorian calendar. |
 | int96RebaseMode    |   EXCEPTION   | The int96RebaseMode option allows to specify the rebasing mode for INT96 timestamps from the Julian to Proleptic Gregorian calendar. Currently supported modes are: <br/> EXCEPTION: fails in reads of ancient INT96 timestamps that are ambiguous between the two calendars. <br/> CORRECTED: loads INT96 timestamps without rebasing. <br/> LEGACY: performs rebasing of ancient timestamps from the Julian to Proleptic Gregorian calendar.                                                                        |
 | mergeSchema        |     false     | Sets whether we should merge schemas collected from all Parquet part-files.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
@@ -210,15 +212,15 @@ import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToParquetF
 
 ```scala
 DataFrameToGCSBucketWriter
-      .write(
-        dataFrame = df,
-        fileFormat = parquetFileFormat,
-        bucketName = myBucket,
-        path = outputPath
-      )
+  .write(
+    dataFrame = df,
+    fileFormat = parquetFileFormat,
+    bucketName = myBucket,
+    path = outputPath
+  )
 ``````
 
-## Google BigQuery
+## BigQuery
 
 User can use this library to write/persist spark dataframe to google BigQuery table.
 
@@ -235,26 +237,27 @@ import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWrite
 
 ```scala
 DataFrameToBigQueryWriter
-      .write(
-        dataFrame = df,
-        table = "myBQTable", // or table = "myBQDataset.myBQTable"
-        dataset = Option("myBQDataset"),
-        temporaryGcsBucket = Option("myTempGcsBucket")
-      )
+  .write(
+    dataFrame = df,
+    table = "myBQTable", // or table = "myBQDataset.myBQTable"
+    dataset = Some("myBQDataset"),
+    temporaryGCSBucket = Some("myTempGCSBucket")
+  )
 ``````
+
 User can provide below parameters to the write method:
 
-| Parameter Name     | Optional/Mandatory | Default Value | Description                                                                                                   |
-|:-------------------|:-------------------|:-------------:|:--------------------------------------------------------------------------------------------------------------|
-| dataFrame          | Mandatory          |     none      | Spark dataframe to be written                                                                                 |
-| table              | Mandatory          |     none      | BigQuery tableName (Also allowed to specify fully qualified name like dataset.tableName)                      |
-| dataset            | Optional           |     none      | BigQuery dataset name                                                                                         |
-| temporaryGcsBucket | Optional           |     none      | Temporary google cloud bucket name used as a staging storage layer (Optional but recommended)                 |
-| createDisposition  | Optional           |     none      | Optional, determines what to do if the table already exists ("CREATE_IF_NEEDED", "CREATE_NEVER")              |
-| writeDisposition   | Optional           |     none      | Optional, specifies the write disposition ("WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY")                   |
-| partitionField     | Optional           |     none      | Optional, specifies the field to partition the BigQuery table by                                              |
-| clusteredFields    | Optional           |     none      | Optional, specifies fields to cluster by in the BigQuery table                                                |
-| saveMode           | Optional           |   Overwrite   | mode of writing; default is overwrite; can be avoided if writeDisposition/ createDisposition has been defined |
+| Parameter Name     | Mandatory | Default Value | Description                                                                                                   |
+|:-------------------|:---------:|:-------------:|:--------------------------------------------------------------------------------------------------------------|
+| dataFrame          |    Yes    |     None      | Spark dataframe to be written                                                                                 |
+| table              |    Yes    |     None      | BigQuery tableName (Also allowed to specify fully qualified name like dataset.tableName)                      |
+| dataset            |    No     |     None      | BigQuery dataset name                                                                                         |
+| temporaryGcsBucket |    No     |     None      | Temporary google cloud bucket name used as a staging storage layer (Optional but recommended)                 |
+| createDisposition  |    No     |     None      | Optional, determines what to do if the table already exists ("CREATE_IF_NEEDED", "CREATE_NEVER")              |
+| writeDisposition   |    No     |     None      | Optional, specifies the write disposition ("WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY")                   |
+| partitionField     |    No     |     None      | Optional, specifies the field to partition the BigQuery table by                                              |
+| clusteredFields    |    No     |     None      | Optional, specifies fields to cluster by in the BigQuery table                                                |
+| saveMode           |    No     |   Overwrite   | Mode of writing; default is overwrite; can be avoided if writeDisposition/ createDisposition has been defined |
 
 Also, note that for writing to the BigQuery it is necessary to have below privileges to the user:
 

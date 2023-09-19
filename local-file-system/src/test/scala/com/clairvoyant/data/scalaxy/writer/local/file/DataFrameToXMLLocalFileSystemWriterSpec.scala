@@ -74,7 +74,7 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
       text =
         """|<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
            |<rows>
-           |    <row type="x">
+           |    <row types="x">
            |        <col_A>val_A1</col_A>
            |        <col_B>val_B1</col_B>
            |        <col_C>val_C1</col_C>

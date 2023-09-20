@@ -26,6 +26,7 @@ implicit object DataFrameToIndirectBQWriter extends DataFrameToBQWriter[Indirect
           "destinationTableKmsKeyName" -> writerType.destinationTableKmsKeyName,
           "partitionExpirationMs" -> writerType.partitionExpirationMs,
           "partitionField" -> writerType.partitionField,
+          "partitionType" -> writerType.partitionType,
           "persistentGcsBucket" -> writerType.persistentGcsBucket,
           "persistentGcsPath" -> writerType.persistentGcsPath,
           "proxyAddress" -> writerType.proxyAddress,
@@ -45,7 +46,6 @@ implicit object DataFrameToIndirectBQWriter extends DataFrameToBQWriter[Indirect
           "httpConnectTimeout" -> writerType.httpConnectTimeout,
           "httpMaxRetry" -> writerType.httpMaxRetry,
           "intermediateFormat" -> writerType.intermediateFormat,
-          "partitionType" -> writerType.partitionType,
           "temporaryGcsBucket" -> writerType.temporaryGcsBucket,
           "useAvroLogicalTypes" -> writerType.useAvroLogicalTypes,
           "writeMethod" -> "indirect"

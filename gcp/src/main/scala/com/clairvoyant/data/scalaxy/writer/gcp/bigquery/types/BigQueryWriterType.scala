@@ -37,7 +37,7 @@ case class IndirectBigQueryWriterType(
     intermediateFormat: String = "parquet",
     partitionExpirationMs: Option[Long] = None,
     partitionField: Option[String] = None,
-    partitionType: String = "DAY",
+    partitionType: Option[String] = None,
     persistentGcsBucket: Option[String] = None,
     persistentGcsPath: Option[String] = None,
     proxyAddress: Option[String] = None,

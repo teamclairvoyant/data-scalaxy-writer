@@ -1,6 +1,6 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.bigquery.types
 
-import zio.config.derivation.nameWithLabel
+import zio.config.derivation.*
 
 @nameWithLabel
 sealed trait BigQueryWriterType

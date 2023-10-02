@@ -47,7 +47,7 @@ val csvFileFormat = CSVFileFormat(
 User can provide below options to the `CSVFileFormat` instance:
 
 | Parameter Name            |        Default Value        | Description                                                                                                                                                                        |
-| :------------------------ | :-------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:--------------------------|:---------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | charToEscapeQuoteEscaping |              \              | Sets a single character used for escaping the escape for the quote character.                                                                                                      |
 | compression               |            none             | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, bzip2, gzip, lz4, snappy and deflate).                            |
 | dateFormat                |         yyyy-MM-dd          | Sets the string that indicates a date format.                                                                                                                                      |
@@ -103,7 +103,7 @@ val jsonFileFormat = JSONFileFormat(
 User can provide below options to the `JSONFileFormat` instance:
 
 | Parameter Name     |        Default Value        | Description                                                                                                                                             |
-| :----------------- | :-------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|:-------------------|:---------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | compression        |            none             | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, bzip2, gzip, lz4, snappy and deflate). |
 | dateFormat         |         yyyy-MM-dd          | Sets the string that indicates a date format.                                                                                                           |
 | encoding           |            UTF-8            | Specifies encoding (charset) of saved CSV files.                                                                                                        |
@@ -149,7 +149,7 @@ val xmlFileFormat = XMLFileFormat(
 User can provide below options to the `XMLFileFormat` instance:
 
 | Parameter Name   |                  Default Value                  | Description                                                                                                                                                                                                                                                                                          |
-| :--------------- | :---------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:-----------------|:-----------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | arrayElementName |                      item                       | Name of XML element that encloses each element of an array-valued column when writing.                                                                                                                                                                                                               |
 | attributePrefix  |                        _                        | The prefix for attributes so that we can differentiating attributes and elements. This will be the prefix for field names.                                                                                                                                                                           |
 | compression      |                      None                       | Compression codec to use when saving to file. <br/>Should be the fully qualified name of a class implementing org.apache.hadoop.io.compress.CompressionCodec or one of case-insensitive shorten names (bzip2, gzip, lz4, and snappy). <br/>Defaults to no compression when a codec is not specified. |
@@ -196,7 +196,7 @@ val parquetFileFormat = ParquetFileFormat()
 User can provide below options to the `ParquetFileFormat` instance:
 
 | Parameter Name     | Default Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| :----------------- | :-----------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:-------------------|:-------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | datetimeRebaseMode |   EXCEPTION   | The datetimeRebaseMode option allows to specify the rebasing mode for the values of the DATE, TIMESTAMP_MILLIS, TIMESTAMP_MICROS logical types from the Julian to Proleptic Gregorian calendar. <br/> Currently supported modes are: <br/> EXCEPTION: fails in reads of ancient dates/timestamps that are ambiguous between the two calendars. <br/> CORRECTED: loads dates/timestamps without rebasing. <br/> LEGACY: performs rebasing of ancient dates/timestamps from the Julian to Proleptic Gregorian calendar. |
 | int96RebaseMode    |   EXCEPTION   | The int96RebaseMode option allows to specify the rebasing mode for INT96 timestamps from the Julian to Proleptic Gregorian calendar. Currently supported modes are: <br/> EXCEPTION: fails in reads of ancient INT96 timestamps that are ambiguous between the two calendars. <br/> CORRECTED: loads INT96 timestamps without rebasing. <br/> LEGACY: performs rebasing of ancient timestamps from the Julian to Proleptic Gregorian calendar.                                                                        |
 | mergeSchema        |     false     | Sets whether we should merge schemas collected from all Parquet part-files.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
@@ -229,11 +229,13 @@ There are two ways to write the dataframe to BigQuery table:
 * Direct Write
 * Indirect Write
 
-You can read about the difference between these two approaches [here](https://github.com/GoogleCloudDataproc/spark-bigquery-connector#writing-data-to-bigquery).
+You can read about the difference between these two
+approaches [here](https://github.com/GoogleCloudDataproc/spark-bigquery-connector#writing-data-to-bigquery).
 
 ### Direct Write
 
-Suppose user wants to write the dataframe `df` to the bigQuery table named `myBQTable` present under the dataset `myBQDataset`.
+Suppose user wants to write the dataframe `df` to the bigQuery table named `myBQTable` present under the
+dataset `myBQDataset`.
 Then user need to perform below steps:
 
 #### 1. Define BigQuery writer type
@@ -249,7 +251,7 @@ val bigQueryWriterType = DirectBigQueryWriterType(
 Apart from `createDisposition`, user can pass below parameters to the `DirectBigQueryWriterType` instance:
 
 | Parameter Name                 |  Default Value   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| :----------------------------- | :--------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:-------------------------------|:----------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bigQueryTableLabel             |    Empty List    | Can be used to add labels to the table while writing to a table. Multiple labels can be set.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | clusteredFields                |       None       | A string of non-repeated, top level columns seperated by comma.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | createDisposition              | CREATE_IF_NEEDED | Specifies whether the job is allowed to create new tables. The permitted values are:<br/>CREATE_IF_NEEDED - Configures the job to create the table if it does not exist<br/>CREATE_NEVER - Configures the job to fail if the table does not exist <br/>This option takes place only in case Spark has decided to write data to the table based on the SaveMode.                                                                                                                                                                                                                                            |
@@ -265,7 +267,6 @@ Apart from `createDisposition`, user can pass below parameters to the `DirectBig
 | queryJobPriority               |   INTERACTIVE    | Priority levels set for the job while reading data from BigQuery query. The permitted values are:<br/>BATCH - Query is queued and started as soon as idle resources are available, usually within a few minutes. If the query hasn't started within 3 hours, its priority is changed to INTERACTIVE.<br/>INTERACTIVE - Query is executed as soon as possible and count towards the concurrent rate limit and the daily rate limit.<br/>For WRITE, this option will be effective when DIRECT write is used with OVERWRITE mode, where the connector overwrites the destination table using MERGE statement. |
 | writeAtLeastOnce               |      false       | Guarantees that data is written to BigQuery at least once. This is a lesser guarantee than exactly once. This is suitable for streaming scenarios in which data is continuously being written in small batches.<br/>Supported only by the `DIRECT` write method and mode is NOT `Overwrite`.                                                                                                                                                                                                                                                                                                               |
 
-
 #### 2. Import type class instance
 
 ```scala
@@ -278,17 +279,18 @@ import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances.DataFrameToDir
 import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
 
 DataFrameToBigQueryWriter
-    .write[DirectBigQueryWriterType](
-      dataFrame = df,
-      table = myBQTable,
-      dataset = myBQDataset,
-      writerType = bigQueryWriterType
-    )
+  .write[DirectBigQueryWriterType](
+    dataFrame = df,
+    table = myBQTable,
+    dataset = myBQDataset,
+    writerType = bigQueryWriterType
+  )
 ``````
 
 ### Direct Write
 
-Suppose user wants to write the dataframe `df` to the bigQuery table named `myBQTable` present under the dataset `myBQDataset`.
+Suppose user wants to write the dataframe `df` to the bigQuery table named `myBQTable` present under the
+dataset `myBQDataset`.
 Then user need to perform below steps:
 
 #### 1. Define BigQuery writer type
@@ -304,7 +306,7 @@ val bigQueryWriterType = IndirectBigQueryWriterType(
 Apart from `createDisposition`, user can pass below parameters to the `DirectBigQueryWriterType` instance:
 
 | Parameter Name             |  Default Value   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| :------------------------- | :--------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|:---------------------------|:----------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | allowFieldAddition         |      false       | Adds the ALLOW_FIELD_ADDITION SchemaUpdateOption to the BigQuery LoadJob. Allowed values are true and false.                                                                                                                                                                                                                                                                                                                                                                                                              |
 | allowFieldRelaxation       |      false       | Adds the ALLOW_FIELD_RELAXATION SchemaUpdateOption to the BigQuery LoadJob. Allowed values are true and false.                                                                                                                                                                                                                                                                                                                                                                                                            |
 | bigQueryTableLabel         |    Empty List    | Can be used to add labels to the table while writing to a table. Multiple labels can be set.                                                                                                                                                                                                                                                                                                                                                                                                                              |
@@ -328,7 +330,6 @@ Apart from `createDisposition`, user can pass below parameters to the `DirectBig
 | temporaryGcsBucket         |       None       | The GCS bucket that temporarily holds the data before it is loaded to BigQuery. Required unless set in the Spark configuration (spark.conf.set(...)).                                                                                                                                                                                                                                                                                                                                                                     |
 | useAvroLogicalTypes        |      false       | When loading from Avro (`.option("intermediateFormat", "avro")`), BigQuery uses the underlying Avro types instead of the logical types [by default].  Supplying this option converts Avro logical types to their corresponding BigQuery data types.                                                                                                                                                                                                                                                                       |
 
-
 #### 2. Import type class instance
 
 ```scala
@@ -341,18 +342,18 @@ import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances.DataFrameToInd
 import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
 
 DataFrameToBigQueryWriter
-    .write[IndirectBigQueryWriterType](
-      dataFrame = df,
-      table = myBQTable,
-      dataset = myBQDataset,
-      writerType = bigQueryWriterType
-    )
+  .write[IndirectBigQueryWriterType](
+    dataFrame = df,
+    table = myBQTable,
+    dataset = myBQDataset,
+    writerType = bigQueryWriterType
+  )
 ``````
 
 User can provide below parameters to the `write` method:
 
 | Parameter Name | Mandatory | Default Value | Description                                                                                                                                 |
-| :------------- | :-------: | :-----------: | :------------------------------------------------------------------------------------------------------------------------------------------ |
+|:---------------|:---------:|:-------------:|:--------------------------------------------------------------------------------------------------------------------------------------------|
 | dataFrame      |    Yes    |     None      | Spark dataframe to be written to BigQuery table.                                                                                            |
 | table          |    Yes    |     None      | The name of big query table where dataframe needs to be persisted.                                                                          |
 | dataset        |    No     |     None      | The dataset containing the table. If you are providing fully qualified name in `table` parameter, then you can ignore this option.          |
@@ -363,9 +364,9 @@ User can provide below parameters to the `write` method:
 
 Also, note that for writing to the BigQuery it is necessary to have below privileges to the user:
 
-| Role Name                   |             Purpose              |
-| :-------------------------- | :------------------------------: |
-| roles/bigquery.dataEditor   |      Access BigQuery Tables      |
+| Role Name                   | Purpose                          |
+|:----------------------------|:---------------------------------|
+| roles/bigquery.dataEditor   | Access BigQuery Tables           |
 | roles/bigquery.jobUser      | Create and query BigQuery tables |
-| roles/storage.objectViewer  |  To list and read GCS contents   |
-| roles/storage.objectCreator |     To create folders in GCS     |
+| roles/storage.objectViewer  | To list and read GCS contents    |
+| roles/storage.objectCreator | To create folders in GCS         |

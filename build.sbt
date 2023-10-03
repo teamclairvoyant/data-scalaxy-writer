@@ -136,6 +136,6 @@ lazy val `writer-aws` = (project in file("aws"))
 
 lazy val `writer-gcp` = (project in file("gcp"))
   .settings(
-    version := "1.0.0",
+    version := "1.1.0",
     libraryDependencies ++= gcpDependencies
   )

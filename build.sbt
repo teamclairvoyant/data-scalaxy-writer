@@ -124,18 +124,24 @@ lazy val `data-scalaxy-writer` = (project in file("."))
 lazy val `writer-local-file-system` = (project in file("local-file-system"))
   .settings(
     version := "1.0.0",
-    libraryDependencies ++= localFileSystemDependencies
+    libraryDependencies ++= localFileSystemDependencies,
+    publishConfiguration := publishConfiguration.value.withOverwrite(true),
+    publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
   )
 
 lazy val `writer-aws` = (project in file("aws"))
   .settings(
     version := "1.0.0",
     libraryDependencies ++= awsDependencies,
-    Test / parallelExecution := false
+    Test / parallelExecution := false,
+    publishConfiguration := publishConfiguration.value.withOverwrite(true),
+    publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
   )
 
 lazy val `writer-gcp` = (project in file("gcp"))
   .settings(
     version := "1.1.0",
-    libraryDependencies ++= gcpDependencies
+    libraryDependencies ++= gcpDependencies,
+    publishConfiguration := publishConfiguration.value.withOverwrite(true),
+    publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
   )

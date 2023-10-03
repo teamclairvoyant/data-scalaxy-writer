@@ -2,6 +2,8 @@
 .metals
 .venv
 .vscode
+.idea
+.bsp
 
 project
 target

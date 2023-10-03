@@ -23,24 +23,21 @@ Please see the detailed documentation [here](local-file-system/README.md).
 
 ## aws
 
-User can use this library to write/persist spark dataframe to s3 buckets in various file formats.
-Supported file formats are:
+User can use this library to write/persist spark dataframe to various storage options provided by AWS.
 
-* CSV
-* JSON
-* XML
-* Parquet
+Currently, we are supporting below options:
+
+* S3 Buckets
 
 Please see the detailed documentation [here](aws/README.md).
 
 ## gcp
 
-User can use this library to write/persist spark dataframe to gcs buckets in various file formats.
-Supported file formats are:
+User can use this library to write/persist spark dataframe to various storage options provided by google cloud system.
 
-* CSV
-* JSON
-* XML
-* Parquet
+Currently, we are supporting below options:
+
+* GCS
+* BigQuery
 
 Please see the detailed documentation [here](gcp/README.md).

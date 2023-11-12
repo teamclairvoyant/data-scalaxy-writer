@@ -44,6 +44,7 @@ val bigqueryConnectorVersion = "0.32.2"
 val s3MockVersion = "0.2.6"
 val scalaParserCombinatorsVersion = "2.3.0"
 val sparkVersion = "3.4.1"
+val sparkRedshiftConnectorVersion = "6.1.0-spark_3.5"
 val sparkXMLVersion = "0.16.0"
 val zioConfigVersion = "4.0.0-RC16"
 
@@ -79,6 +80,10 @@ val sparkHadoopCloudDependencies = Seq(
   "org.apache.spark" %% "spark-hadoop-cloud" % sparkVersion
 ).map(_.cross(CrossVersion.for3Use2_13))
 
+val sparkRedshiftConnectorDependencies = Seq(
+  "io.github.spark-redshift-community" % "spark-redshift_2.12" % sparkRedshiftConnectorVersion
+).map(_ excludeAll ("com.fasterxml.jackson.module", "jackson-module-scala"))
+
 val sparkXMLDependencies = Seq(
   "com.databricks" %% "spark-xml" % sparkXMLVersion
 ).map(_.cross(CrossVersion.for3Use2_13))
@@ -100,6 +105,7 @@ val awsDependencies =
     s3MockDependencies ++
     scalaParserCombinatorsDependencies ++
     sparkDependencies ++
+    sparkRedshiftConnectorDependencies ++
     sparkHadoopCloudDependencies ++
     sparkXMLDependencies ++
     zioConfigDependencies

@@ -10,17 +10,23 @@ object DataFrameToRedshiftWriter {
       port: Int,
       databaseName: String,
       tableName: String,
-      tempS3Path: String,
+      tempDirS3Path: String,
+      tempDirRegion: String,
       iamRoleARN: String,
+      userName: String,
+      password: String,
       saveMode: SaveMode = SaveMode.Overwrite
   ): Unit =
     dataFrame.write
       .format(source = "io.github.spark_redshift_community.spark.redshift")
       .options {
         Map(
-          "url" -> s"jdbc:redshift:iam//$hostName:$port/$databaseName",
+          "url" -> s"jdbc:redshift://$hostName:$port/$databaseName",
+          "user" -> userName,
+          "password" -> password,
           "dbtable" -> tableName,
-          "tempdir" -> tempS3Path,
+          "tempdir" -> tempDirS3Path,
+          "tempdir_region" -> tempDirRegion,
           "aws_iam_role" -> iamRoleARN
         )
       }

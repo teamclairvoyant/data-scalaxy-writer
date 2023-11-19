@@ -41,9 +41,10 @@ ThisBuild / wartremoverErrors ++= Warts.allBut(
 val dataScalaxyTestUtilVersion = "1.0.0"
 val gcsConnectorVersion = "hadoop3-2.2.17"
 val bigqueryConnectorVersion = "0.32.2"
+val redshiftJDBCDriverVersion = "2.1.0.22"
 val s3MockVersion = "0.2.6"
 val scalaParserCombinatorsVersion = "2.3.0"
-val sparkVersion = "3.4.1"
+val sparkVersion = "3.5.0"
 val sparkRedshiftConnectorVersion = "6.1.0-spark_3.5"
 val sparkXMLVersion = "0.16.0"
 val zioConfigVersion = "4.0.0-RC16"
@@ -58,6 +59,10 @@ val gcsConnectorDependencies = Seq("com.google.cloud.bigdataoss" % "gcs-connecto
 
 val bigqueryConnectorDependencies = Seq("com.google.cloud.spark" %% "spark-bigquery" % bigqueryConnectorVersion)
   .map(_.cross(CrossVersion.for3Use2_13))
+
+val redshiftJDBCDriverDependencies = Seq(
+  "com.amazon.redshift" % "redshift-jdbc42" % redshiftJDBCDriverVersion
+)
 
 val s3MockDependencies = Seq(
   "io.findify" %% "s3mock" % s3MockVersion % Test
@@ -76,13 +81,19 @@ val sparkDependencies = Seq(
   .map(_ excludeAll ("org.scala-lang.modules", "scala-xml"))
   .map(_.cross(CrossVersion.for3Use2_13))
 
+val sparkAvroDependencies = Seq(
+  "org.apache.spark" %% "spark-avro" % sparkVersion
+).map(_.cross(CrossVersion.for3Use2_13))
+
 val sparkHadoopCloudDependencies = Seq(
   "org.apache.spark" %% "spark-hadoop-cloud" % sparkVersion
 ).map(_.cross(CrossVersion.for3Use2_13))
 
 val sparkRedshiftConnectorDependencies = Seq(
-  "io.github.spark-redshift-community" % "spark-redshift_2.12" % sparkRedshiftConnectorVersion
-).map(_ excludeAll ("com.fasterxml.jackson.module", "jackson-module-scala"))
+  "io.github.spark-redshift-community" %% "spark-redshift" % sparkRedshiftConnectorVersion
+)
+  .map(_.cross(CrossVersion.for3Use2_13))
+  .map(_ excludeAll ("com.fasterxml.jackson.module", "jackson-module-scala"))
 
 val sparkXMLDependencies = Seq(
   "com.databricks" %% "spark-xml" % sparkXMLVersion
@@ -102,9 +113,11 @@ val localFileSystemDependencies =
 
 val awsDependencies =
   dataScalaxyTestUtilDependencies ++
+    redshiftJDBCDriverDependencies ++
     s3MockDependencies ++
     scalaParserCombinatorsDependencies ++
     sparkDependencies ++
+    sparkAvroDependencies ++
     sparkRedshiftConnectorDependencies ++
     sparkHadoopCloudDependencies ++
     sparkXMLDependencies ++

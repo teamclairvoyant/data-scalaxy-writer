@@ -13,6 +13,11 @@ class DataFrameToRedshiftWriterSpec extends DataFrameReader {
          |}""".stripMargin
     )
 
+    val redshiftWriterOptions = RedshiftWriterOptions(
+      tempDirRegion = Some("ca-central-1"),
+      iamRoleARN = Some("arn:aws:iam::283220348991:role/service-role/AmazonRedshift-CommandsAccessRole-20231115T135908")
+    )
+
     DataFrameToRedshiftWriter
       .write(
         dataFrame = df,
@@ -20,11 +25,10 @@ class DataFrameToRedshiftWriterSpec extends DataFrameReader {
         port = 5439,
         databaseName = "dev",
         tableName = "my_redshift_table",
-        tempDirS3Path = "s3a://my-tmp-redshift-bucket/redshift-tmp-dir/",
-        tempDirRegion = "ca-central-1",
-        iamRoleARN = "arn:aws:iam::283220348991:role/service-role/AmazonRedshift-CommandsAccessRole-20231115T135908",
         userName = "admin",
-        password = "RedshiftNov2023"
+        password = "RedshiftNov2023",
+        tempDirS3Path = "s3a://my-tmp-redshift-bucket/redshift-tmp-dir/",
+        writerOptions = redshiftWriterOptions
       )
   }
 

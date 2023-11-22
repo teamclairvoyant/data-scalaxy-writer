@@ -51,14 +51,14 @@ val zioConfigVersion = "4.0.0-RC16"
 
 // ----- TOOL DEPENDENCIES ----- //
 
+val bigqueryConnectorDependencies = Seq("com.google.cloud.spark" %% "spark-bigquery" % bigqueryConnectorVersion)
+  .map(_.cross(CrossVersion.for3Use2_13))
+
 val dataScalaxyTestUtilDependencies = Seq(
   "com.clairvoyant.data.scalaxy" %% "test-util" % dataScalaxyTestUtilVersion % Test
 )
 
 val gcsConnectorDependencies = Seq("com.google.cloud.bigdataoss" % "gcs-connector" % gcsConnectorVersion)
-
-val bigqueryConnectorDependencies = Seq("com.google.cloud.spark" %% "spark-bigquery" % bigqueryConnectorVersion)
-  .map(_.cross(CrossVersion.for3Use2_13))
 
 val redshiftJDBCDriverDependencies = Seq(
   "com.amazon.redshift" % "redshift-jdbc42" % redshiftJDBCDriverVersion

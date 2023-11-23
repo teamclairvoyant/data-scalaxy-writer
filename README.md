@@ -28,6 +28,7 @@ User can use this library to write/persist spark dataframe to various storage op
 Currently, we are supporting below options:
 
 * S3 Buckets
+* Redshift Tables
 
 Please see the detailed documentation [here](aws/README.md).
 
@@ -37,7 +38,7 @@ User can use this library to write/persist spark dataframe to various storage op
 
 Currently, we are supporting below options:
 
-* GCS
-* BigQuery
+* GCS Buckets
+* BigQuery Tables
 
 Please see the detailed documentation [here](gcp/README.md).

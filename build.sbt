@@ -136,6 +136,7 @@ lazy val `writer-local-file-system` = (project in file("local-file-system"))
   .settings(
     version := "1.0.0",
     libraryDependencies ++= localFileSystemDependencies,
+    Test / parallelExecution := false,
     publishConfiguration := publishConfiguration.value.withOverwrite(true),
     publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
   )

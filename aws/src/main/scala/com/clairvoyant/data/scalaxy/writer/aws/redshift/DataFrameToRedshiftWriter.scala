@@ -7,13 +7,13 @@ object DataFrameToRedshiftWriter {
   def write(
       dataFrame: DataFrame,
       hostName: String,
-      port: Int,
+      port: Int = 5439,
       databaseName: String,
       tableName: String,
       userName: String,
       password: String,
       tempDirS3Path: String,
-      writerOptions: RedshiftWriterOptions,
+      writerOptions: RedshiftWriterOptions = RedshiftWriterOptions(),
       saveMode: SaveMode = SaveMode.Overwrite
   ): Unit =
     val dataFrameWriterOptions =

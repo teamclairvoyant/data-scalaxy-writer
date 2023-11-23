@@ -22,7 +22,6 @@ class DataFrameToRedshiftWriterSpec extends DataFrameReader {
       .write(
         dataFrame = df,
         hostName = "my-redshift-cluster.cjlkeer2jbwx.ca-central-1.redshift.amazonaws.com",
-        port = 5439,
         databaseName = "dev",
         tableName = "my_redshift_table",
         userName = "admin",

@@ -25,7 +25,7 @@ object DataFrameToRedshiftWriter {
         "tempdir" -> tempDirS3Path,
         "tempformat" -> writerOptions.tempFormat,
         "diststyle" -> writerOptions.distStyle,
-        "We " -> writerOptions.preActions.mkString(";"),
+        "preactions" -> writerOptions.preActions.mkString(";"),
         "postactions" -> writerOptions.postActions.mkString(";"),
         "csvnullstring" -> writerOptions.csvNullString
       ) ++

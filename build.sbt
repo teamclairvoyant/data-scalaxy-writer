@@ -145,7 +145,6 @@ lazy val `writer-aws` = (project in file("aws"))
   .settings(
     version := "1.1.0",
     libraryDependencies ++= awsDependencies,
-    Test / parallelExecution := false,
     publishConfiguration := publishConfiguration.value.withOverwrite(true),
     publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
   )

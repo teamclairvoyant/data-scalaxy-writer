@@ -57,3 +57,5 @@ jobs:
         env:
           GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY: AKIAUD4J7SA7QCJIWJ4R
+          AWS_SECRET_KEY: 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

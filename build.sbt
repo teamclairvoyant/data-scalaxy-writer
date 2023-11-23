@@ -45,7 +45,6 @@ val redshiftJDBCDriverVersion = "2.1.0.22"
 val s3MockVersion = "0.2.6"
 val scalaParserCombinatorsVersion = "2.3.0"
 val sparkVersion = "3.5.0"
-val sparkRedshiftConnectorVersion = "6.1.0-spark_3.5"
 val sparkXMLVersion = "0.16.0"
 val zioConfigVersion = "4.0.0-RC16"
 
@@ -89,12 +88,6 @@ val sparkHadoopCloudDependencies = Seq(
   "org.apache.spark" %% "spark-hadoop-cloud" % sparkVersion
 ).map(_.cross(CrossVersion.for3Use2_13))
 
-val sparkRedshiftConnectorDependencies = Seq(
-  "io.github.spark-redshift-community" %% "spark-redshift" % sparkRedshiftConnectorVersion
-)
-  .map(_.cross(CrossVersion.for3Use2_13))
-  .map(_ excludeAll ("com.fasterxml.jackson.module", "jackson-module-scala"))
-
 val sparkXMLDependencies = Seq(
   "com.databricks" %% "spark-xml" % sparkXMLVersion
 ).map(_.cross(CrossVersion.for3Use2_13))
@@ -118,7 +111,6 @@ val awsDependencies =
     scalaParserCombinatorsDependencies ++
     sparkDependencies ++
     sparkAvroDependencies ++
-    sparkRedshiftConnectorDependencies ++
     sparkHadoopCloudDependencies ++
     sparkXMLDependencies ++
     zioConfigDependencies
@@ -153,6 +145,7 @@ lazy val `writer-aws` = (project in file("aws"))
     version := "1.1.0",
     libraryDependencies ++= awsDependencies,
     Test / parallelExecution := false,
+    unmanagedBase := baseDirectory.value / "aws/lib",
     publishConfiguration := publishConfiguration.value.withOverwrite(true),
     publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
   )

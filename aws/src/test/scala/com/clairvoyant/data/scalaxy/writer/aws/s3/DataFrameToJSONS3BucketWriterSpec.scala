@@ -10,6 +10,8 @@ class DataFrameToJSONS3BucketWriterSpec extends DataFrameReader with DataFrameMa
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
+  val dataFrameToS3BucketWriter = DataFrameToS3BucketWriter[JSONFileFormat]
+
   "write()" should "write a dataframe to the provided s3 path" in {
     val df = readJSONFromText(
       """|{
@@ -25,8 +27,8 @@ class DataFrameToJSONS3BucketWriterSpec extends DataFrameReader with DataFrameMa
 
     s3Client.createBucket(bucketName)
 
-    DataFrameToS3BucketWriter
-      .write[JSONFileFormat](
+    dataFrameToS3BucketWriter
+      .write(
         dataFrame = df,
         fileFormat = jsonFileFormat,
         bucketName = bucketName,

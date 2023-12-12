@@ -13,6 +13,8 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
+  val dataFrameToLocalFileSystemWriter = DataFrameToLocalFileSystemWriter[CSVFileFormat]
+
   "write()" should "write a dataframe to the provided path" in {
     val df = readJSONFromText(
       """|{
@@ -24,7 +26,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
 
     val csvFileFormat = CSVFileFormat()
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -54,7 +56,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       emptyValue = "NA"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -84,7 +86,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       header = false
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -117,7 +119,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       ignoreLeadingWhiteSpace = false
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -147,7 +149,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       ignoreLeadingWhiteSpace = true
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -177,7 +179,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       ignoreTrailingWhiteSpace = false
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -207,7 +209,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       ignoreTrailingWhiteSpace = true
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -237,7 +239,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       lineSep = "#"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -270,7 +272,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       nullValue = "Invalid"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,
@@ -300,7 +302,7 @@ class DataFrameToCSVLocalFileSystemWriterSpec extends DataFrameReader with DataF
       sep = ";"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = csvFileFormat,

@@ -10,6 +10,8 @@ class DataFrameToXMLS3BucketWriterSpec extends DataFrameReader with DataFrameMat
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
+  val dataFrameToS3BucketWriter = DataFrameToS3BucketWriter[XMLFileFormat]
+
   "write()" should "write a dataframe to the provided s3 path" in {
     val df = readJSONFromText(
       """|{
@@ -25,8 +27,8 @@ class DataFrameToXMLS3BucketWriterSpec extends DataFrameReader with DataFrameMat
 
     s3Client.createBucket(bucketName)
 
-    DataFrameToS3BucketWriter
-      .write[XMLFileFormat](
+    dataFrameToS3BucketWriter
+      .write(
         dataFrame = df,
         fileFormat = xmlFileFormat,
         bucketName = bucketName,

@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances
 
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.JSONFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToJSONFileWriter extends DataFrameToGCSFileWriter[JSONFileFormat] {
+implicit object DataFrameToJSONFileWriter extends DataFrameToGCSBucketWriter[JSONFileFormat] {
 
   import org.apache.spark.sql.catalyst.json.JSONOptions.*
 

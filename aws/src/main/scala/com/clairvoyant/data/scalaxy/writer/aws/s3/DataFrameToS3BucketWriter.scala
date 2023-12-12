@@ -1,18 +1,20 @@
 package com.clairvoyant.data.scalaxy.writer.aws.s3
 
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.FileFormat
-import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToS3FileWriter
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-object DataFrameToS3BucketWriter {
+trait DataFrameToS3BucketWriter[T]:
 
-  def write[T <: FileFormat](
+  def write(
       dataFrame: DataFrame,
       fileFormat: T,
       bucketName: String,
       path: String,
       saveMode: SaveMode = SaveMode.Overwrite
-  )(using dataFrameToS3FileWriter: DataFrameToS3FileWriter[T]): Unit =
-    dataFrameToS3FileWriter.write(dataFrame, fileFormat, bucketName, path, saveMode)
+  ): Unit
 
-}
+object DataFrameToS3BucketWriter:
+
+  def apply[T <: FileFormat](
+      using dataFrameToS3BucketWriter: DataFrameToS3BucketWriter[T]
+  ): DataFrameToS3BucketWriter[T] = dataFrameToS3BucketWriter

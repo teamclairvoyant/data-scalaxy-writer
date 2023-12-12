@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances
 
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.XMLFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToXMLFileWriter extends DataFrameToGCSFileWriter[XMLFileFormat] {
+implicit object DataFrameToXMLFileWriter extends DataFrameToGCSBucketWriter[XMLFileFormat] {
 
   import com.databricks.spark.xml.*
 

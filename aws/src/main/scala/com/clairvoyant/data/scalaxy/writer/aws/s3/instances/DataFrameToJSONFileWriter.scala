@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.aws.s3.instances
 
+import com.clairvoyant.data.scalaxy.writer.aws.s3.DataFrameToS3BucketWriter
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.JSONFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToJSONFileWriter extends DataFrameToS3FileWriter[JSONFileFormat] {
+implicit object DataFrameToJSONFileWriter extends DataFrameToS3BucketWriter[JSONFileFormat] {
 
   import org.apache.spark.sql.catalyst.json.JSONOptions.*
 

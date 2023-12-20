@@ -10,6 +10,8 @@ class DataFrameToParquetS3BucketWriterSpec extends DataFrameReader with DataFram
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
+  val dataFrameToS3BucketWriter = DataFrameToS3BucketWriter[ParquetFileFormat]
+
   "write()" should "write a dataframe to the provided s3 path" in {
     val df = readJSONFromText(
       """|{
@@ -25,8 +27,8 @@ class DataFrameToParquetS3BucketWriterSpec extends DataFrameReader with DataFram
 
     s3Client.createBucket(bucketName)
 
-    DataFrameToS3BucketWriter
-      .write[ParquetFileFormat](
+    dataFrameToS3BucketWriter
+      .write(
         dataFrame = df,
         fileFormat = parquetFileFormat,
         bucketName = bucketName,

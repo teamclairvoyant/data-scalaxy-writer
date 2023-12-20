@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.local.file.instances
 
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.ParquetFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToParquetFileWriter extends DataFrameToFileWriter[ParquetFileFormat] {
+implicit object DataFrameToParquetFileWriter extends DataFrameToLocalFileSystemWriter[ParquetFileFormat] {
 
   override def write(dataFrame: DataFrame, fileFormat: ParquetFileFormat, path: String, saveMode: SaveMode): Unit =
     dataFrame.write

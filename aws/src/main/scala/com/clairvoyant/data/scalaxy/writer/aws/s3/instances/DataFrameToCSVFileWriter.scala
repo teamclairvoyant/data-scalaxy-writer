@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.aws.s3.instances
 
+import com.clairvoyant.data.scalaxy.writer.aws.s3.DataFrameToS3BucketWriter
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.CSVFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToCSVFileWriter extends DataFrameToS3FileWriter[CSVFileFormat] {
+implicit object DataFrameToCSVFileWriter extends DataFrameToS3BucketWriter[CSVFileFormat] {
 
   import org.apache.spark.sql.catalyst.csv.CSVOptions.*
 

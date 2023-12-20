@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.local.file.instances
 
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.CSVFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToCSVFileWriter extends DataFrameToFileWriter[CSVFileFormat] {
+implicit object DataFrameToCSVFileWriter extends DataFrameToLocalFileSystemWriter[CSVFileFormat] {
 
   import org.apache.spark.sql.catalyst.csv.CSVOptions.*
 

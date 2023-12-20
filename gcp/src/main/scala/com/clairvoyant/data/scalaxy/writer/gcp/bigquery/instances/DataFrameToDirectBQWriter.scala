@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances
 
+import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
 import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.types.DirectBigQueryWriterType
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToDirectBQWriter extends DataFrameToBQWriter[DirectBigQueryWriterType] {
+implicit object DataFrameToDirectBQWriter extends DataFrameToBigQueryWriter[DirectBigQueryWriterType] {
 
   override def write(
       dataFrame: DataFrame,

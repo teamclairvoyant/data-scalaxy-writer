@@ -12,19 +12,60 @@ ThisBuild / credentials += Credentials(
   System.getenv("GITHUB_TOKEN")
 )
 
-ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-local-file-system" % "1.0.0"
+ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-local-file-system" % "2.0.0"
 ```
 
 Make sure you add `GITHUB_USERNAME` and `GITHUB_TOKEN` to the environment variables.
 
 `GITHUB_TOKEN` is the Personal Access Token with the permission to read packages.
 
+### API
+
+The API is very simple. User need to call the `write` method of the `DataFrameToLocalFileSystemWriter` object.
+
+```scala
+def write(
+           dataFrame: DataFrame,
+           fileFormat: T,
+           path: String,
+           saveMode: SaveMode = SaveMode.Overwrite
+         ): Unit
+```
+
+The `write` method takes below parameters:
+
+| Parameter Name | Mandatory | Default Value | Description                                      |
+|:---------------|:---------:|:-------------:|:-------------------------------------------------|
+| dataFrame      |    Yes    |               | The dataframe to write to the local file system. |
+| fileFormat     |    Yes    |               | The file format to use to write the dataframe.   |
+| path           |    Yes    |               | The path to write the dataframe.                 |
+| saveMode       |    No     |   Overwrite   | The save mode to use to write the dataframe.     |
+
+Supported file formats are:
+
+* CSV
+* JSON
+* XML
+* Parquet
+
 ### CSV
 
 Suppose user wants to write the dataframe `df` to the local file system under the path `outputPath` in the `csv` format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToCSVFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.CSVFileFormat
@@ -37,7 +78,7 @@ val csvFileFormat = CSVFileFormat(
 User can provide below options to the `CSVFileFormat` instance:
 
 | Parameter Name            |        Default Value        | Description                                                                                                                                                                        |
-| :------------------------ | :-------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:--------------------------|:---------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | charToEscapeQuoteEscaping |              \              | Sets a single character used for escaping the escape for the quote character.                                                                                                      |
 | compression               |            none             | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, bzip2, gzip, lz4, snappy and deflate).                            |
 | dateFormat                |         yyyy-MM-dd          | Sets the string that indicates a date format.                                                                                                                                      |
@@ -56,42 +97,49 @@ User can provide below options to the `CSVFileFormat` instance:
 | timestampFormat           |     yyyy-MM-dd HH:mm:ss     | Sets the string that indicates a timestamp format.                                                                                                                                 |
 | timestampNTZFormat        | yyyy-MM-dd'T'HH:mm:ss[.SSS] | Sets the string that indicates a timestamp without timezone format.                                                                                                                |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToCSVFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToLocalFileSystemWriter
-      .write(
-        dataFrame = df,
-        fileFormat = csvFileFormat,
-        path = outputPath
-      )
-``````
+DataFrameToLocalFileSystemWriter[CSVFileFormat]
+  .write(
+    dataFrame = df,
+    fileFormat = csvFileFormat,
+    path = outputPath
+  )
+```
 
 ### JSON
 
-Suppose user wants to write the dataframe `df` to the local file system under the path `outputPath` in the `json` format.
+Suppose user wants to write the dataframe `df` to the local file system under the path `outputPath` in the `json`
+format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToJSONFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.JSONFileFormat
 
 val jsonFileFormat = JSONFileFormat(
-      ignoreNullFields = true
-    )
+  ignoreNullFields = true
+)
 ```
 
 User can provide below options to the `JSONFileFormat` instance:
 
 | Parameter Name     |        Default Value        | Description                                                                                                                                             |
-| :----------------- | :-------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|:-------------------|:---------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | compression        |            none             | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, bzip2, gzip, lz4, snappy and deflate). |
 | dateFormat         |         yyyy-MM-dd          | Sets the string that indicates a date format.                                                                                                           |
 | encoding           |            UTF-8            | Specifies encoding (charset) of saved CSV files.                                                                                                        |
@@ -101,42 +149,48 @@ User can provide below options to the `JSONFileFormat` instance:
 | timestampNTZFormat | yyyy-MM-dd'T'HH:mm:ss[.SSS] | Sets the string that indicates a timestamp without timezone format.                                                                                     |
 | timezone           |             UTC             | Sets the string that indicates a time zone ID to be used to format timestamps in the JSON datasources or partition values.                              |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToJSONFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToLocalFileSystemWriter
-      .write(
-        dataFrame = df,
-        fileFormat = jsonFileFormat,
-        path = outputPath
-      )
-``````
+DataFrameToLocalFileSystemWriter[JSONFileFormat]
+  .write(
+    dataFrame = df,
+    fileFormat = jsonFileFormat,
+    path = outputPath
+  )
+```
 
 ### XML
 
 Suppose user wants to write the dataframe `df` to the local file system under the path `outputPath` in the `xml` format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToXMLFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.XMLFileFormat
 
 val xmlFileFormat = XMLFileFormat(
-      attributePrefix = "attr_"
-    )
+  attributePrefix = "attr_"
+)
 ```
 
 User can provide below options to the `XMLFileFormat` instance:
 
 | Parameter Name   |                  Default Value                  | Description                                                                                                                                                                                                                                                                                          |
-| :--------------- | :---------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:-----------------|:-----------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | arrayElementName |                      item                       | Name of XML element that encloses each element of an array-valued column when writing.                                                                                                                                                                                                               |
 | attributePrefix  |                        _                        | The prefix for attributes so that we can differentiating attributes and elements. This will be the prefix for field names.                                                                                                                                                                           |
 | compression      |                      None                       | Compression codec to use when saving to file. <br/>Should be the fully qualified name of a class implementing org.apache.hadoop.io.compress.CompressionCodec or one of case-insensitive shorten names (bzip2, gzip, lz4, and snappy). <br/>Defaults to no compression when a codec is not specified. |
@@ -148,29 +202,36 @@ User can provide below options to the `XMLFileFormat` instance:
 | timestampFormat  |        yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]         | Controls the format used to write TimestampType format columns.                                                                                                                                                                                                                                      |
 | valueTag         |                     _VALUE                      | The tag used for the value when there are attributes in the element having no child.                                                                                                                                                                                                                 |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToXMLFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToLocalFileSystemWriter
-      .write(
-        dataFrame = df,
-        fileFormat = xmlFileFormat,
-        path = outputPath
-      )
-``````
+DataFrameToLocalFileSystemWriter[XMLFileFormat]
+  .write(
+    dataFrame = df,
+    fileFormat = xmlFileFormat,
+    path = outputPath
+  )
+```
 
 ### PARQUET
 
-Suppose user wants to write the dataframe `df` to the local file system under the path `outputPath` in the `parquet` format.
+Suppose user wants to write the dataframe `df` to the local file system under the path `outputPath` in the `parquet`
+format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToParquetFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.ParquetFileFormat
@@ -181,25 +242,19 @@ val parquetFileFormat = ParquetFileFormat()
 User can provide below options to the `ParquetFileFormat` instance:
 
 | Parameter Name     | Default Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| :----------------- | :-----------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:-------------------|:-------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | datetimeRebaseMode |   EXCEPTION   | The datetimeRebaseMode option allows to specify the rebasing mode for the values of the DATE, TIMESTAMP_MILLIS, TIMESTAMP_MICROS logical types from the Julian to Proleptic Gregorian calendar. <br/> Currently supported modes are: <br/> EXCEPTION: fails in reads of ancient dates/timestamps that are ambiguous between the two calendars. <br/> CORRECTED: loads dates/timestamps without rebasing. <br/> LEGACY: performs rebasing of ancient dates/timestamps from the Julian to Proleptic Gregorian calendar. |
 | int96RebaseMode    |   EXCEPTION   | The int96RebaseMode option allows to specify the rebasing mode for INT96 timestamps from the Julian to Proleptic Gregorian calendar. Currently supported modes are: <br/> EXCEPTION: fails in reads of ancient INT96 timestamps that are ambiguous between the two calendars. <br/> CORRECTED: loads INT96 timestamps without rebasing. <br/> LEGACY: performs rebasing of ancient timestamps from the Julian to Proleptic Gregorian calendar.                                                                        |
 | mergeSchema        |     false     | Sets whether we should merge schemas collected from all Parquet part-files.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | compression        |    snappy     | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, uncompressed, snappy, gzip, lzo, brotli, lz4, and zstd).                                                                                                                                                                                                                                                                                                                                             |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.local.file.instances.DataFrameToParquetFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToLocalFileSystemWriter
-      .write(
-        dataFrame = df,
-        fileFormat = parquetFileFormat,
-        path = outputPath
-      )
+DataFrameToLocalFileSystemWriter[ParquetFileFormat]
+  .write(
+    dataFrame = df,
+    fileFormat = parquetFileFormat,
+    path = outputPath
+  )
 ``````

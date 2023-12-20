@@ -13,6 +13,8 @@ class DataFrameToJSONLocalFileSystemWriterSpec extends DataFrameReader with Data
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
+  val dataFrameToLocalFileSystemWriter = DataFrameToLocalFileSystemWriter[JSONFileFormat]
+
   "write()" should "write a dataframe to the provided path" in {
     val df = readJSONFromText(
       """|{
@@ -24,7 +26,7 @@ class DataFrameToJSONLocalFileSystemWriterSpec extends DataFrameReader with Data
 
     val jsonFileFormat = JSONFileFormat()
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = jsonFileFormat,
@@ -50,7 +52,7 @@ class DataFrameToJSONLocalFileSystemWriterSpec extends DataFrameReader with Data
       ignoreNullFields = true
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = jsonFileFormat,

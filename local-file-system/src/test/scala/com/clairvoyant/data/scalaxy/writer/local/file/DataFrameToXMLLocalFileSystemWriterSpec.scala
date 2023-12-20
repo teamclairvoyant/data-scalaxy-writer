@@ -10,6 +10,8 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
+  val dataFrameToLocalFileSystemWriter = DataFrameToLocalFileSystemWriter[XMLFileFormat]
+
   "write()" should "write a dataframe to the provided path" in {
     val df = readJSONFromText(
       """|{
@@ -21,7 +23,7 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
 
     val xmlFileFormat = XMLFileFormat()
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = xmlFileFormat,
@@ -58,7 +60,7 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
       attributePrefix = "attr_"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = xmlFileFormat,
@@ -99,7 +101,7 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
       declaration = "custom_declaration"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = xmlFileFormat,
@@ -135,7 +137,7 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
       rowTag = "item"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = xmlFileFormat,
@@ -176,7 +178,7 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
       rootTag = "items"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = xmlFileFormat,
@@ -223,7 +225,7 @@ class DataFrameToXMLLocalFileSystemWriterSpec extends DataFrameReader with DataF
       valueTag = "#VALUE"
     )
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = xmlFileFormat,

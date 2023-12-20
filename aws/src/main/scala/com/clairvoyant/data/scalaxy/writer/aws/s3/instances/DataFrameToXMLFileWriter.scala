@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.aws.s3.instances
 
+import com.clairvoyant.data.scalaxy.writer.aws.s3.DataFrameToS3BucketWriter
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.XMLFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToXMLFileWriter extends DataFrameToS3FileWriter[XMLFileFormat] {
+implicit object DataFrameToXMLFileWriter extends DataFrameToS3BucketWriter[XMLFileFormat] {
 
   import com.databricks.spark.xml.*
 

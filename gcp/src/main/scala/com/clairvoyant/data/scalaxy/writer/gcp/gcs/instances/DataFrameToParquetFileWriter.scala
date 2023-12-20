@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances
 
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.ParquetFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToParquetFileWriter extends DataFrameToGCSFileWriter[ParquetFileFormat] {
+implicit object DataFrameToParquetFileWriter extends DataFrameToGCSBucketWriter[ParquetFileFormat] {
 
   override def write(
       dataFrame: DataFrame,

@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.aws.s3.instances
 
+import com.clairvoyant.data.scalaxy.writer.aws.s3.DataFrameToS3BucketWriter
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.ParquetFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToParquetFileWriter extends DataFrameToS3FileWriter[ParquetFileFormat] {
+implicit object DataFrameToParquetFileWriter extends DataFrameToS3BucketWriter[ParquetFileFormat] {
 
   override def write(
       dataFrame: DataFrame,

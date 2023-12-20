@@ -12,7 +12,7 @@ ThisBuild / credentials += Credentials(
   System.getenv("GITHUB_TOKEN")
 )
 
-ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-aws" % "1.0.0"
+ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-aws" % "2.0.0"
 ```
 
 Make sure you add `GITHUB_USERNAME` and `GITHUB_TOKEN` to the environment variables.
@@ -22,6 +22,33 @@ Make sure you add `GITHUB_USERNAME` and `GITHUB_TOKEN` to the environment variab
 ## S3 BUCKET
 
 User can use this library to write/persist spark dataframe to s3 buckets in various file formats.
+
+### API
+
+The library provides below `write` API in type class `DataFrameToS3BucketWriter` in order to write spark
+dataframe into S3 bucket.
+
+```scala
+def write(
+           dataFrame: DataFrame,
+           fileFormat: T,
+           bucketName: String,
+           path: String,
+           saveMode: SaveMode = SaveMode.Overwrite
+         ): Unit
+```
+
+The `write` method takes below arguments:
+
+| Argument Name | Mandatory | Default Value | Description                                     |
+|:--------------|:---------:|:-------------:|:------------------------------------------------|
+| dataFrame     |    Yes    |       -       | Dataframe to write to s3 bucket.                |
+| fileFormat    |    Yes    |       -       | `FileFormat` to use while writing to s3 bucket. |
+| bucketName    |    Yes    |       -       | S3 bucket name.                                 |
+| path          |    Yes    |       -       | S3 path to write the dataframe.                 |
+| saveMode      |    No     |   overwrite   | Save mode to use while writing to s3 bucket.    |
+
+
 Supported file formats are:
 
 * CSV
@@ -29,12 +56,25 @@ Supported file formats are:
 * XML
 * Parquet
 
+
 ### CSV
 
 Suppose user wants to write the dataframe `df` to s3 bucket `mybucket` under the path `outputPath` in the `csv` format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.DataFrameToS3BucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToCSVFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.CSVFileFormat
@@ -66,16 +106,11 @@ User can provide below options to the `CSVFileFormat` instance:
 | timestampFormat           |     yyyy-MM-dd HH:mm:ss     | Sets the string that indicates a timestamp format.                                                                                                                                 |
 | timestampNTZFormat        | yyyy-MM-dd'T'HH:mm:ss[.SSS] | Sets the string that indicates a timestamp without timezone format.                                                                                                                |
 
-#### 2. Import type class instance
+
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToCSVFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToS3BucketWriter
+DataFrameToS3BucketWriter[CSVFileFormat]
   .write(
     dataFrame = df,
     fileFormat = csvFileFormat,
@@ -90,7 +125,19 @@ Suppose user wants to write the dataframe `df` to the s3 bucket `myBucket` under
 format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.DataFrameToS3BucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToJSONFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.JSONFileFormat
@@ -113,16 +160,10 @@ User can provide below options to the `JSONFileFormat` instance:
 | timestampNTZFormat | yyyy-MM-dd'T'HH:mm:ss[.SSS] | Sets the string that indicates a timestamp without timezone format.                                                                                     |
 | timezone           |             UTC             | Sets the string that indicates a time zone ID to be used to format timestamps in the JSON datasources or partition values.                              |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToJSONFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToS3BucketWriter
+DataFrameToS3BucketWriter[JSONFileFormat]
   .write(
     dataFrame = df,
     fileFormat = jsonFileFormat,
@@ -136,7 +177,19 @@ DataFrameToS3BucketWriter
 Suppose user wants to write the dataframe `df` to s3 bucket `myBucket` under the path `outputPath` in the `xml` format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.DataFrameToS3BucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToXMLFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.XMLFileFormat
@@ -161,16 +214,10 @@ User can provide below options to the `XMLFileFormat` instance:
 | timestampFormat  |        yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]         | Controls the format used to write TimestampType format columns.                                                                                                                                                                                                                                      |
 | valueTag         |                     _VALUE                      | The tag used for the value when there are attributes in the element having no child.                                                                                                                                                                                                                 |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToXMLFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToS3BucketWriter
+DataFrameToS3BucketWriter[XMLFileFormat]
   .write(
     dataFrame = df,
     fileFormat = xmlFileFormat,
@@ -185,7 +232,19 @@ Suppose user wants to write the dataframe `df` to s3 bucket `myBucket` under the
 format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.DataFrameToS3BucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToParquetFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.aws.s3.formats.ParquetFileFormat
@@ -202,16 +261,10 @@ User can provide below options to the `ParquetFileFormat` instance:
 | mergeSchema        |     false     | Sets whether we should merge schemas collected from all Parquet part-files.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | compression        |    snappy     | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, uncompressed, snappy, gzip, lzo, brotli, lz4, and zstd).                                                                                                                                                                                                                                                                                                                                             |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.aws.s3.instances.DataFrameToParquetFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToS3BucketWriter
+DataFrameToS3BucketWriter[ParquetFileFormat]
   .write(
     dataFrame = df,
     fileFormat = parquetFileFormat,

@@ -13,6 +13,8 @@ class DataFrameToParquetLocalFileSystemWriterSpec
 
   val outputDirPath = s"/tmp/out_${System.currentTimeMillis()}"
 
+  val dataFrameToLocalFileSystemWriter = DataFrameToLocalFileSystemWriter[ParquetFileFormat]
+
   "write()" should "write a dataframe to the provided path" in {
     val df = readJSONFromText(
       """|{
@@ -24,7 +26,7 @@ class DataFrameToParquetLocalFileSystemWriterSpec
 
     val parquetFileFormat = ParquetFileFormat()
 
-    DataFrameToLocalFileSystemWriter
+    dataFrameToLocalFileSystemWriter
       .write(
         dataFrame = df,
         fileFormat = parquetFileFormat,

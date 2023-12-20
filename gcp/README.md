@@ -12,7 +12,7 @@ ThisBuild / credentials += Credentials(
   System.getenv("GITHUB_TOKEN")
 )
 
-ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-gcp" % "1.0.0"
+ThisBuild / libraryDependencies += "com.clairvoyant.data.scalaxy" %% "writer-gcp" % "2.0.0"
 ```
 
 Make sure you add `GITHUB_USERNAME` and `GITHUB_TOKEN` to the environment variables.
@@ -22,6 +22,31 @@ Make sure you add `GITHUB_USERNAME` and `GITHUB_TOKEN` to the environment variab
 ## GCS Bucket
 
 User can use this library to write/persist spark dataframe to gcs buckets in various file formats.
+
+### API
+
+The library provides below `write` method to write the dataframe to gcs bucket:
+
+```scala
+def write(
+           dataFrame: DataFrame,
+           fileFormat: T,
+           bucketName: String,
+           path: String,
+           saveMode: SaveMode = SaveMode.Overwrite
+         ): Unit
+```
+
+The `write` method takes below parameters:
+
+| Parameter Name | Mandatory | Default Value | Description                                                                                                   |
+|:---------------|:---------:|:-------------:|:--------------------------------------------------------------------------------------------------------------|
+| dataFrame      |    Yes    |     None      | Spark dataframe to be written to gcs bucket.                                                                  |
+| fileFormat     |    Yes    |     None      | The instance of file format type class.                                                                       |
+| bucketName     |    Yes    |     None      | The name of gcs bucket where dataframe needs to be persisted.                                                 |
+| path           |    Yes    |     None      | The path inside the gcs bucket where dataframe needs to be persisted.                                         |
+| saveMode       |    No     |   Overwrite   | Mode of writing; default is overwrite; can be avoided if writeDisposition/ createDisposition has been defined |
+
 Supported file formats are:
 
 * CSV
@@ -34,7 +59,19 @@ Supported file formats are:
 Suppose user wants to write the dataframe `df` to gcs bucket `mybucket` under the path `outputPath` in the `csv` format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToCSVFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.CSVFileFormat
@@ -66,23 +103,17 @@ User can provide below options to the `CSVFileFormat` instance:
 | timestampFormat           |     yyyy-MM-dd HH:mm:ss     | Sets the string that indicates a timestamp format.                                                                                                                                 |
 | timestampNTZFormat        | yyyy-MM-dd'T'HH:mm:ss[.SSS] | Sets the string that indicates a timestamp without timezone format.                                                                                                                |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToCSVFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToGCSBucketWriter
+DataFrameToGCSBucketWriter[CSVFileFormat]
   .write(
     dataFrame = df,
     fileFormat = csvFileFormat,
     bucketName = mybucket,
     path = outputPath
   )
-``````
+```
 
 ### JSON
 
@@ -90,7 +121,19 @@ Suppose user wants to write the dataframe `df` to the gcs bucket `myBucket` unde
 format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToJSONFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.JSONFileFormat
@@ -113,30 +156,36 @@ User can provide below options to the `JSONFileFormat` instance:
 | timestampNTZFormat | yyyy-MM-dd'T'HH:mm:ss[.SSS] | Sets the string that indicates a timestamp without timezone format.                                                                                     |
 | timezone           |             UTC             | Sets the string that indicates a time zone ID to be used to format timestamps in the JSON datasources or partition values.                              |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToJSONFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToGCSBucketWriter
+DataFrameToGCSBucketWriter[JSONFileFormat]
   .write(
     dataFrame = df,
     fileFormat = jsonFileFormat,
     bucketName = myBucket,
     path = outputPath
   )
-``````
+```
 
 ### XML
 
 Suppose user wants to write the dataframe `df` to gcs bucket `myBucket` under the path `outputPath` in the `xml` format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToXMLFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.XMLFileFormat
@@ -161,23 +210,17 @@ User can provide below options to the `XMLFileFormat` instance:
 | timestampFormat  |        yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]         | Controls the format used to write TimestampType format columns.                                                                                                                                                                                                                                      |
 | valueTag         |                     _VALUE                      | The tag used for the value when there are attributes in the element having no child.                                                                                                                                                                                                                 |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToXMLFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToGCSBucketWriter
+DataFrameToGCSBucketWriter[XMLFileFormat]
   .write(
     dataFrame = df,
     fileFormat = xmlFileFormat,
     bucketName = myBucket,
     path = outputPath
   )
-``````
+```
 
 ### PARQUET
 
@@ -185,12 +228,26 @@ Suppose user wants to write the dataframe `df` to gcs bucket `myBucket` under th
 format.
 Then user need to perform below steps:
 
-#### 1. Define file format
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToParquetFileWriter
+```
+
+#### 3. Define file format
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.ParquetFileFormat
 
-val parquetFileFormat = ParquetFileFormat()
+val parquetFileFormat = ParquetFileFormat(
+  mergeSchema = true
+)
 ```
 
 User can provide below options to the `ParquetFileFormat` instance:
@@ -202,27 +259,49 @@ User can provide below options to the `ParquetFileFormat` instance:
 | mergeSchema        |     false     | Sets whether we should merge schemas collected from all Parquet part-files.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | compression        |    snappy     | Compression codec to use when saving to file. This can be one of the known case-insensitive shorten names (none, uncompressed, snappy, gzip, lzo, brotli, lz4, and zstd).                                                                                                                                                                                                                                                                                                                                             |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToParquetFileWriter
-``````
-
-#### 3. Call API
-
-```scala
-DataFrameToGCSBucketWriter
+DataFrameToGCSBucketWriter[ParquetFileFormat]
   .write(
     dataFrame = df,
     fileFormat = parquetFileFormat,
     bucketName = myBucket,
     path = outputPath
   )
-``````
+```
 
 ## BigQuery
 
 User can use this library to write/persist spark dataframe to google cloud BigQuery table.
+
+### API
+
+The library provides below `write` method to write the dataframe to bigquery table:
+
+```scala
+def write(
+           dataFrame: DataFrame,
+           table: String,
+           dataset: Option[String] = None,
+           project: Option[String] = None,
+           parentProject: Option[String] = None,
+           saveMode: SaveMode = SaveMode.Overwrite,
+           writerType: T
+         ): Unit
+```
+
+The `write` method takes below parameters:
+
+| Parameter Name | Mandatory | Default Value | Description                                                                                                                                 |
+|:---------------|:---------:|:-------------:|:--------------------------------------------------------------------------------------------------------------------------------------------|
+| dataFrame      |    Yes    |     None      | Spark dataframe to be written to gcs bucket.                                                                                                |
+| table          |    Yes    |     None      | The name of bigquery table where dataframe needs to be persisted.                                                                           |
+| dataset        |    No     |     None      | The dataset containing the table. If you are providing fully qualified name in `table` parameter, then you can ignore this option.          |
+| project        |    No     |     None      | The Google Cloud Project ID of the table.<br/>(Optional. Defaults to the project of the Service Account being used)                         |
+| parentProject  |    No     |     None      | The Google Cloud Project ID of the table to bill for the export.<br/>(Optional. Defaults to the project of the Service Account being used). |
+| saveMode       |    No     |   Overwrite   | Mode of writing; default is overwrite; can be avoided if writeDisposition/ createDisposition has been defined                               |
+| writerType     |    Yes    |     None      | The instance of direct or indirect big query writer type.                                                                                   |
 
 There are two ways to write the dataframe to BigQuery table:
 
@@ -238,7 +317,19 @@ Suppose user wants to write the dataframe `df` to the bigQuery table named `myBQ
 dataset `myBQDataset`.
 Then user need to perform below steps:
 
-#### 1. Define BigQuery writer type
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances.DataFrameToDirectBQWriter
+```
+
+#### 3. Define BigQuery writer type
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.types.DirectBigQueryWriterType
@@ -246,7 +337,7 @@ import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.types.DirectBigQueryWrit
 val bigQueryWriterType = DirectBigQueryWriterType(
   createDisposition = "CREATE_IF_NEEDED"
 )
-``````
+```
 
 Apart from `createDisposition`, user can pass below parameters to the `DirectBigQueryWriterType` instance:
 
@@ -267,33 +358,37 @@ Apart from `createDisposition`, user can pass below parameters to the `DirectBig
 | queryJobPriority               |   INTERACTIVE    | Priority levels set for the job while reading data from BigQuery query. The permitted values are:<br/>BATCH - Query is queued and started as soon as idle resources are available, usually within a few minutes. If the query hasn't started within 3 hours, its priority is changed to INTERACTIVE.<br/>INTERACTIVE - Query is executed as soon as possible and count towards the concurrent rate limit and the daily rate limit.<br/>For WRITE, this option will be effective when DIRECT write is used with OVERWRITE mode, where the connector overwrites the destination table using MERGE statement. |
 | writeAtLeastOnce               |      false       | Guarantees that data is written to BigQuery at least once. This is a lesser guarantee than exactly once. This is suitable for streaming scenarios in which data is continuously being written in small batches.<br/>Supported only by the `DIRECT` write method and mode is NOT `Overwrite`.                                                                                                                                                                                                                                                                                                               |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances.DataFrameToDirectBQWriter
-``````
-
-#### 3. Call API
-
-```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
-
-DataFrameToBigQueryWriter
-  .write[DirectBigQueryWriterType](
+DataFrameToBigQueryWriter[DirectBigQueryWriterType]
+  .write(
     dataFrame = df,
     table = myBQTable,
     dataset = myBQDataset,
     writerType = bigQueryWriterType
   )
-``````
+```
 
-### Direct Write
+### Indirect Write
 
 Suppose user wants to write the dataframe `df` to the bigQuery table named `myBQTable` present under the
 dataset `myBQDataset`.
 Then user need to perform below steps:
 
-#### 1. Define BigQuery writer type
+#### 1. Import type class
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
+```
+
+#### 2. Import type class instance
+
+```scala
+import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances.DataFrameToIndirectBQWriter
+```
+
+#### 3. Define BigQuery writer type
 
 ```scala
 import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.types.IndirectBigQueryWriterType
@@ -301,7 +396,7 @@ import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.types.IndirectBigQueryWr
 val bigQueryWriterType = IndirectBigQueryWriterType(
   createDisposition = "CREATE_IF_NEEDED"
 )
-``````
+```
 
 Apart from `createDisposition`, user can pass below parameters to the `DirectBigQueryWriterType` instance:
 
@@ -330,37 +425,17 @@ Apart from `createDisposition`, user can pass below parameters to the `DirectBig
 | temporaryGcsBucket         |       None       | The GCS bucket that temporarily holds the data before it is loaded to BigQuery. Required unless set in the Spark configuration (spark.conf.set(...)).                                                                                                                                                                                                                                                                                                                                                                     |
 | useAvroLogicalTypes        |      false       | When loading from Avro (`.option("intermediateFormat", "avro")`), BigQuery uses the underlying Avro types instead of the logical types [by default].  Supplying this option converts Avro logical types to their corresponding BigQuery data types.                                                                                                                                                                                                                                                                       |
 
-#### 2. Import type class instance
+#### 4. Call API
 
 ```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances.DataFrameToIndirectBQWriter
-``````
-
-#### 3. Call API
-
-```scala
-import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.DataFrameToBigQueryWriter
-
-DataFrameToBigQueryWriter
-  .write[IndirectBigQueryWriterType](
+DataFrameToBigQueryWriter[IndirectBigQueryWriterType]
+  .write(
     dataFrame = df,
     table = myBQTable,
     dataset = myBQDataset,
     writerType = bigQueryWriterType
   )
-``````
-
-User can provide below parameters to the `write` method:
-
-| Parameter Name | Mandatory | Default Value | Description                                                                                                                                 |
-|:---------------|:---------:|:-------------:|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| dataFrame      |    Yes    |     None      | Spark dataframe to be written to BigQuery table.                                                                                            |
-| table          |    Yes    |     None      | The name of big query table where dataframe needs to be persisted.                                                                          |
-| dataset        |    No     |     None      | The dataset containing the table. If you are providing fully qualified name in `table` parameter, then you can ignore this option.          |
-| project        |    No     |     None      | The Google Cloud Project ID of the table.<br/>(Optional. Defaults to the project of the Service Account being used)                         |
-| parentProject  |    No     |     None      | The Google Cloud Project ID of the table to bill for the export.<br/>(Optional. Defaults to the project of the Service Account being used). |
-| saveMode       |    No     |   Overwrite   | Mode of writing; default is overwrite; can be avoided if writeDisposition/ createDisposition has been defined                               |
-| writerType     |    Yes    |     None      | The instance of direct or indirect big query writer type.                                                                                   |
+```
 
 Also, note that for writing to the BigQuery it is necessary to have below privileges to the user:
 

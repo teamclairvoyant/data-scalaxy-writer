@@ -1,12 +1,11 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.bigquery
 
-import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.instances.DataFrameToBQWriter
 import com.clairvoyant.data.scalaxy.writer.gcp.bigquery.types.BigQueryWriterType
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-object DataFrameToBigQueryWriter {
+trait DataFrameToBigQueryWriter[T]:
 
-  def write[T <: BigQueryWriterType](
+  def write(
       dataFrame: DataFrame,
       table: String,
       dataset: Option[String] = None,
@@ -14,15 +13,10 @@ object DataFrameToBigQueryWriter {
       parentProject: Option[String] = None,
       saveMode: SaveMode = SaveMode.Overwrite,
       writerType: T
-  )(using dataFrameToBQWriter: DataFrameToBQWriter[T]): Unit =
-    dataFrameToBQWriter.write(
-      dataFrame,
-      table,
-      dataset,
-      project,
-      parentProject,
-      saveMode,
-      writerType
-    )
+  ): Unit
 
-}
+object DataFrameToBigQueryWriter:
+
+  def apply[T <: BigQueryWriterType](
+      using dataFrameToBigQueryWriter: DataFrameToBigQueryWriter[T]
+  ): DataFrameToBigQueryWriter[T] = dataFrameToBigQueryWriter

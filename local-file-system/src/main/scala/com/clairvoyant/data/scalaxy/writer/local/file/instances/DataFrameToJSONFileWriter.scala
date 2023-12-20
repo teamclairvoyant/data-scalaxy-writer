@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.local.file.instances
 
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.JSONFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToJSONFileWriter extends DataFrameToFileWriter[JSONFileFormat] {
+implicit object DataFrameToJSONFileWriter extends DataFrameToLocalFileSystemWriter[JSONFileFormat] {
 
   import org.apache.spark.sql.catalyst.json.JSONOptions.*
 

@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.local.file.instances
 
+import com.clairvoyant.data.scalaxy.writer.local.file.DataFrameToLocalFileSystemWriter
 import com.clairvoyant.data.scalaxy.writer.local.file.formats.XMLFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToXMLFileWriter extends DataFrameToFileWriter[XMLFileFormat] {
+implicit object DataFrameToXMLFileWriter extends DataFrameToLocalFileSystemWriter[XMLFileFormat] {
 
   import com.databricks.spark.xml.*
 

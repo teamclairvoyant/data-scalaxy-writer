@@ -1,18 +1,20 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.gcs
 
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.FileFormat
-import com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances.DataFrameToGCSFileWriter
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-object DataFrameToGCSBucketWriter {
+trait DataFrameToGCSBucketWriter[T]:
 
-  def write[T <: FileFormat](
+  def write(
       dataFrame: DataFrame,
       fileFormat: T,
       bucketName: String,
       path: String,
       saveMode: SaveMode = SaveMode.Overwrite
-  )(using dataFrameToGCSFileWriter: DataFrameToGCSFileWriter[T]): Unit =
-    dataFrameToGCSFileWriter.write(dataFrame, fileFormat, bucketName, path, saveMode)
+  ): Unit
 
-}
+object DataFrameToGCSBucketWriter:
+
+  def apply[T <: FileFormat](
+      using dataFrameToGCSBucketWriter: DataFrameToGCSBucketWriter[T]
+  ): DataFrameToGCSBucketWriter[T] = dataFrameToGCSBucketWriter

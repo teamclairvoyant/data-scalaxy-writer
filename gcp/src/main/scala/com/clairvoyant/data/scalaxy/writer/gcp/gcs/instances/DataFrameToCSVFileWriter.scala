@@ -1,9 +1,10 @@
 package com.clairvoyant.data.scalaxy.writer.gcp.gcs.instances
 
+import com.clairvoyant.data.scalaxy.writer.gcp.gcs.DataFrameToGCSBucketWriter
 import com.clairvoyant.data.scalaxy.writer.gcp.gcs.formats.CSVFileFormat
 import org.apache.spark.sql.{DataFrame, SaveMode}
 
-implicit object DataFrameToCSVFileWriter extends DataFrameToGCSFileWriter[CSVFileFormat] {
+implicit object DataFrameToCSVFileWriter extends DataFrameToGCSBucketWriter[CSVFileFormat] {
 
   import org.apache.spark.sql.catalyst.csv.CSVOptions.*
 
